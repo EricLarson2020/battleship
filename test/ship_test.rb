@@ -18,18 +18,14 @@ class ShipTest < Minitest::Test
     cruiser = Ship.new("Cruiser", 3)
     assert_equal 3, cruiser.length
   end
+
+  def test_it_has_health_equal_to_length
+    cruiser = Ship.new("Cruiser", 3)
+    assert_equal 3, cruiser.health
+  end
+
 end
-# pry(main)> require './lib/ship'
-# #=> true
-#
-# pry(main)> cruiser = Ship.new("Cruiser", 3)
-# #=> #<Ship:0x00007feb05112d10...>
-#
-# pry(main)> cruiser.name
-# #=> "Cruiser"
-#
-# pry(main)> cruiser.length
-# #=> 3
+
 #
 # pry(main)> cruiser.health
 # #=> 3
