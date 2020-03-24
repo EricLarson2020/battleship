@@ -6,9 +6,6 @@ class Board
   attr_accessor :cells
 
   def initialize
-  end
-
-  def cells
     @cells = {"A1" => Cell.new("A1"),
               "A2" => Cell.new("A2"),
               "A3" => Cell.new("A3"),
@@ -25,6 +22,11 @@ class Board
               "D2" => Cell.new("D2"),
               "D3" => Cell.new("D3"),
               "D4" => Cell.new("D4")  }
+  end
+
+  def cells
+     @cells
+
   end
 
   def valid_coordinate?(cell_key)
@@ -85,7 +87,12 @@ class Board
     condition1 && condition2 && condition3
   end
 
-  def render
+  def place(ship, coordinates)
+    if valid_placement?(ship, coordinates)
+      coordinates.each do |coordinate|
+        cells[coordinate].place_ship(ship)
+      end
+    end
 
   end
 
