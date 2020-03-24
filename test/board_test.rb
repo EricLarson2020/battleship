@@ -26,9 +26,21 @@ class BoardTest < Minitest::Test
 
     assert_equal true, board.valid_coordinate?("A1")
     assert_equal true, board.valid_coordinate?("D4")
-    assert_equal false, board.valid_coordinate?(:A1)
-    assert_equal false, board.valid_coordinate?("D9")
-    assert_equal false, board.valid_coordinate?(10)
+    assert_equal false, board.valid_coordinate?("A5")
+    assert_equal false, board.valid_coordinate?("E1")
+    assert_equal false, board.valid_coordinate?("A22")
+  end
+
+  def test_determines_if_placement_coordinates_are_sequential_in_x_direction
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+
+    assert_equal true, board.x_coordinates_sequential?(["A1", "A2"])
+    assert_equal true, board.x_coordinates_sequential?(["A2", "A1"])
+    assert_equal false, board.x_coordinates_sequential?(["A1", "A4"])
+    assert_equal false, board.x_coordinates_sequential?(["A1", "B2"])
+
+
   end
 
 end #final
