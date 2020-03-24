@@ -31,25 +31,27 @@ class Gameplay
 
 
   board = Board.new
+  cruiser = Ship.new("Cruiser", 3)
+  submarine = Ship.new("Submarine", 2)
+
 
       input_2 = gets.chomp
-      input_2.split(",")
-      if input_2.include? (" ")
-        input.gsub(" ","")
-      end
+         input_2.valid_placement?(cruiser, 3) == true
+      input_2 = input_2.split(" ")
+      # if input_2.include? (" ")
+      #   input.gsub(" ","")
 
-      require "pry";binding.pry
-        input_2.split(",")
-
-      # input_2.map do |coor|
-      #   coor.to_s
-      # end
-      binding.pry
       board.place(cruiser, input_2)
+      puts board.render(true)
 
 
+p "Enter the squares for the Submarine (2 spaces):"
+  input_3 = gets.chomp
 
+  input_3 = input_3.split(" ")
+  board.place(submarine, input_3)
 
+    puts board.render(true)
       end
     end
 
