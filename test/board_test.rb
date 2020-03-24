@@ -160,7 +160,10 @@ class BoardTest < Minitest::Test
   def test_sink_a_ship
     board = Board.new
     cruiser = Ship.new("Cruiser", 3)
+    submarine = Ship.new("Submarine", 2)
     board.place(cruiser, ["A1", "A2", "A3"])
+    board.place(submarine, ["C3", "D3"])
+
     #binding.pry
     board.cells["A1"].fire_upon
     board.cells["A2"].fire_upon
@@ -174,8 +177,8 @@ class BoardTest < Minitest::Test
     expected = "  1 2 3 4 \n" +
                "A X X X . \n" +
                "B M . . . \n" +
-               "C M . . . \n" +
-               "D . . M . \n"
+               "C M . S . \n" +
+               "D . . H . \n"
     assert_equal expected, board.render(true)
     assert_equal true, board.cells["A1"].ship.sunk?
   end
