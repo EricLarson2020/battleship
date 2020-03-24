@@ -1,5 +1,6 @@
 require 'pry'
 require './lib/ship'
+require './lib/cell'
 class Board
 
   attr_accessor :cells
@@ -8,22 +9,22 @@ class Board
   end
 
   def cells
-    @cells = {"A1" => "cell",
-              "A2" => "cell",
-              "A3" => "cell",
-              "A4" => "cell",
-              "B1" => "cell",
-              "B2" => "cell",
-              "B3" => "cell",
-              "B4" => "cell",
-              "C1" => "cell",
-              "C2" => "cell",
-              "C3" => "cell",
-              "C4" => "cell",
-              "D1" => "cell",
-              "D2" => "cell",
-              "D3" => "cell",
-              "D4" => "cell"  }
+    @cells = {"A1" => Cell.new("A1"),
+              "A2" => Cell.new("A2"),
+              "A3" => Cell.new("A3"),
+              "A4" => Cell.new("A4"),
+              "B1" => Cell.new("B1"),
+              "B2" => Cell.new("B2"),
+              "B3" => Cell.new("B3"),
+              "B4" => Cell.new("B4"),
+              "C1" => Cell.new("C1"),
+              "C2" => Cell.new("C2"),
+              "C3" => Cell.new("C3"),
+              "C4" => Cell.new("C4"),
+              "D1" => Cell.new("D1"),
+              "D2" => Cell.new("D2"),
+              "D3" => Cell.new("D3"),
+              "D4" => Cell.new("D4")  }
   end
 
   def valid_coordinate?(cell_key)
@@ -82,6 +83,10 @@ class Board
     condition2 = y_coordinates_sequential?(coordinates) || x_coordinates_sequential?(coordinates)
     condition3 = coordinates.length == ship.length
     condition1 && condition2 && condition3
+  end
+
+  def render
+
   end
 
 
