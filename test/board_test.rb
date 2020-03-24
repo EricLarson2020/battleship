@@ -94,7 +94,6 @@ class BoardTest < Minitest::Test
   def test_render_displays_empty_board
     board = Board.new
     board.render
-    # binding.pry
     expected = "  1 2 3 4 \n" +
                "A . . . . \n" +
                "B . . . . \n" +
