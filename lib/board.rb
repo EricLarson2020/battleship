@@ -73,15 +73,10 @@ class Board
     y_condition1 && (y_condition2 || y_condition3)
   end
 
-  # a_to_1 = {"A" => 1, "B" => 2, "C" => 3, "D" => 4}
-  #
-  # y_condition = coordiantes.all? do |coord|
-  #   coord[0][1] == coordiantes[0][1]
-  #   index = 0
-  #   coord[1]
-
   def valid_placement?(ship, coordinates)
-
+    condition1 = y_coordinates_sequential?(coordinates) || x_coordinates_sequential?(coordinates)
+    condition2 = coordinates.length == ship.length
+    condition1 && condition2 
   end
 
 
