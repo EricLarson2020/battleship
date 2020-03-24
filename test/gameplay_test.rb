@@ -7,13 +7,10 @@ require './lib/gameplay'
 
 class ShipTest < Minitest::Test
 
-  def test_p_input_starts_the_game
-
+  def test_the_welcome_method
     game = Gameplay.new
-    cruiser = Ship.new("Cruiser", 3)
+    assert_equal game.welcome
 
-  game.begin
-  
 
 
   end
