@@ -33,17 +33,13 @@ class ShipTest < Minitest::Test
     assert_equal false, cell.empty?
   end
 
+  def test_when_ship_is_fired_upon_it_loses_health
+    cell = Cell.new("B4")
+    cruiser = Ship.new("Cruiser", 3)
+    cell.place_ship(cruiser)
+    assert_equal false, cell.fired_upon?
+    cell.fire_upon
+    assert_equal 2, cell.ship.health
+    assert_equal true, cell.fired_upon?
+  end
 end
-
-
-#
-# pry(main)> cruiser = Ship.new("Cruiser", 3)
-# # => #<Ship:0x00007f84f0891238...>
-#
-# pry(main)> cell.place_ship(cruiser)
-#
-# pry(main)> cell.ship
-# # => #<Ship:0x00007f84f0891238...>
-#
-# pry(main)> cell.empty?
-# # => false
