@@ -14,6 +14,12 @@ class ShipTest < Minitest::Test
     cell = Cell.new("B4")
     assert_equal "B4", cell.coordinate
   end
+
+  def test_if_cell_starts_with_no_ship
+    cell = Cell.new("B4")
+    assert_equal nil, cell.ship
+  end
+
 end
 # pry(main)> cell = Cell.new("B4")
 # # => #<Cell:0x00007f84f0ad4720...>
