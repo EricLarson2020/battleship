@@ -47,12 +47,15 @@ class ShipTest < Minitest::Test
     cell_1 = Cell.new("B4")
     assert_equal ".", cell_1.render
   end
-end
-#   def test_cell_render_when_fired_upon
-#
-#
-# end
 
+  def test_cell_render_when_fired_upon_and_missed
+    cell_1 = Cell.new("B4")
+    cell_1.fire_upon
+    assert_equal "M", cell_1.render
+  end
+
+
+end
 # pry(main)> cell_1 = Cell.new("B4")
 # # => #<Cell:0x00007f84f11df920...>
 #

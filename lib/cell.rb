@@ -21,11 +21,16 @@ class Cell
 
   def fire_upon
     @fire_upon = true
+    if ship != nil
     ship.hit
+    end
   end
 
   def render
-    @fire_upon == false
+    if @fire_upon == false
     "."
+  elsif @fire_upon == true && @ship == nil
+    "M"
+    end
   end
 end
