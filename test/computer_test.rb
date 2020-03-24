@@ -3,6 +3,7 @@ require 'minitest/pride'
 
 require './lib/computer'
 require './lib/board'
+require './lib/ship'
 
 class ComputerTest < Minitest::Test
 
@@ -44,11 +45,25 @@ class ComputerTest < Minitest::Test
     computer.attack # 16
     computer.attack # 17
     #binding.pry
-    assert_equal nil, computer.attack_cell
+    assert_nil computer.attack_cell
 
   end
 
   def test_it_can_place_valid_ships
-    skip
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    submarine = Ship.new("Sumbarine", 2)
+    computer = Computer.new(board, cruiser)
+    cruiser_auto_place = computer.auto_coordinates(cruiser)
+    submarine_auto_place = computer.auto_coordinates(submarine)
+
+    assert_equal true, board.valid_placement?(cruiser, cruiser_auto_place)
+    assert_equal true, board.valid_placement?(submarine, submarine_auto_place)
+
+    board.place(cruiser, cruiser_auto_place)
+    board.place(submarine, submarine_auto_place)
+    puts board.render(true)
+    # binding.pry
+
   end
 end
