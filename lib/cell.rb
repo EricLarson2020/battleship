@@ -28,9 +28,13 @@ class Cell
 
   def render
     if @fire_upon == false
-    "."
-  elsif @fire_upon == true && @ship == nil
-    "M"
+      "."
+    elsif @fire_upon == true && @ship == nil
+      "M"
+    elsif @fire_upon == true && @ship != nil && ship.health != 0
+      "H"
+    else 
+      "X"
     end
   end
 end
