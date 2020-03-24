@@ -85,10 +85,17 @@ class BoardTest < Minitest::Test
     assert_equal "Cruiser", board.cells["A1"].ship.name
     assert_equal "Cruiser", board.cells["A2"].ship.name
     assert_equal "Cruiser", board.cells["A3"].ship.name
-    assert_nil board.cells["A4"].ship
-    assert_nil board.cells["B1"].ship
+    assert_equal nil, board.cells["A4"].ship
+    assert_equal nil, board.cells["B1"].ship
+  end
 
-
+  def test_placed_ships_cannot_overlap
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    board.place(cruiser, ["A1", "A2", "A3"])
+    submarine = Ship.new("Submarine", 2)
+    assert_equal false, board.valid_placement?(submarine, ["A1", "B1"])
+    assert_equal true, board.ships_overlap?(submarine, ["A1", "B1"])
   end
 
   def test_render_displays_empty_board
@@ -181,9 +188,5 @@ class BoardTest < Minitest::Test
     assert_equal expected, board.render(true)
     assert_equal true, board.cells["A1"].ship.sunk?
   end
-
-
-
-
 
 end #final

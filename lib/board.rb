@@ -78,6 +78,29 @@ class Board
     y_condition1 && (y_condition2 || y_condition3)
   end
 
+  def ships_overlap?(ship, coordinates)
+
+    full_cells = cells.select do |coord|
+      cells[coord].ship != nil
+    end
+
+    full_cells.any? do |key, value|
+    full_cell_coordinate = value.coordinate
+
+    coordinates.include?(full_cell_coordinate)
+
+  end
+
+
+
+
+    # select do |coord|
+    # #   cells.coord != nil
+    # #   # require "pry";binding.pry
+    # # end
+
+  end
+
   def valid_placement?(ship, coordinates)
     #binding.pry
     condition1 = coordinates.all? do |coord|
@@ -85,7 +108,8 @@ class Board
     end
     condition2 = y_coordinates_sequential?(coordinates) || x_coordinates_sequential?(coordinates)
     condition3 = coordinates.length == ship.length
-    condition1 && condition2 && condition3
+    condition4 = ships_overlap?(ship, coordinates)
+    condition1 && condition2 && condition3 && !condition4
   end
 
   def place(ship, coordinates)
