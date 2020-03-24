@@ -89,40 +89,104 @@ class BoardTest < Minitest::Test
     assert_equal nil, board.cells["B1"].ship
   end
 
-  def test_ships_cannot_over_lap
-    board = Board.new
-    cruiser = Ship.new("Cruiser", 3)
-    board.place(cruiser, ["A1", "A2", "A3"])
-    submarine = Ship.new("Submarine", 2)
-    assert_equal true, board.ships_overlap?(submarine, ["A1", "B1"])
-  end
-
   def test_placed_ships_cannot_overlap
     board = Board.new
     cruiser = Ship.new("Cruiser", 3)
     board.place(cruiser, ["A1", "A2", "A3"])
     submarine = Ship.new("Submarine", 2)
     assert_equal false, board.valid_placement?(submarine, ["A1", "B1"])
+    assert_equal true, board.ships_overlap?(submarine, ["A1", "B1"])
+  end
+
+  def test_render_displays_empty_board
+    board = Board.new
+    board.render
+    expected = "  1 2 3 4 \n" +
+               "A . . . . \n" +
+               "B . . . . \n" +
+               "C . . . . \n" +
+               "D . . . . \n"
+  assert_equal expected, board.render
+  end
+
+  def test_render_displays_specific_misses
+    board = Board.new
+    board.render
+    board.cells["A1"].fire_upon
+    board.cells["B2"].fire_upon
+    board.cells["C3"].fire_upon
+    board.cells["D4"].fire_upon
+    # binding.pry
+    expected = "  1 2 3 4 \n" +
+               "A M . . . \n" +
+               "B . M . . \n" +
+               "C . . M . \n" +
+               "D . . . M \n"
+  assert_equal expected, board.render
+  end
+
+  def test_render_displays_ships
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    submarine = Ship.new("Submarine", 2)
+    board.place(cruiser, ["A1", "A2", "A3"])
+    board.place(submarine, ["D3", "C3"])
+
+    # binding.pry
+    expected = "  1 2 3 4 \n" +
+               "A S S S . \n" +
+               "B . . . . \n" +
+               "C . . S . \n" +
+               "D . . S . \n"
+  assert_equal expected, board.render(true)
+  end
+
+  def test_hit_and_misses_on_the_board
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    board.place(cruiser, ["A1", "A2", "A3"])
+    #binding.pry
+    board.cells["A1"].fire_upon
+    board.cells["A2"].fire_upon
+    board.cells["B1"].fire_upon
+    board.cells["C1"].fire_upon
+    board.cells["D3"].fire_upon
+
+
+    # binding.pry
+    expected = "  1 2 3 4 \n" +
+               "A H H S . \n" +
+               "B M . . . \n" +
+               "C M . . . \n" +
+               "D . . M . \n"
+    assert_equal expected, board.render(true)
+    assert_equal false, board.cells["A1"].ship.sunk?
+  end
+
+  def test_sink_a_ship
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    submarine = Ship.new("Submarine", 2)
+    board.place(cruiser, ["A1", "A2", "A3"])
+    board.place(submarine, ["C3", "D3"])
+
+    #binding.pry
+    board.cells["A1"].fire_upon
+    board.cells["A2"].fire_upon
+    board.cells["B1"].fire_upon
+    board.cells["C1"].fire_upon
+    board.cells["D3"].fire_upon
+    board.cells["A3"].fire_upon
+
+
+    # binding.pry
+    expected = "  1 2 3 4 \n" +
+               "A X X X . \n" +
+               "B M . . . \n" +
+               "C M . S . \n" +
+               "D . . H . \n"
+    assert_equal expected, board.render(true)
+    assert_equal true, board.cells["A1"].ship.sunk?
   end
 
 end #final
-
-# pry(main)> require './lib/board'
-# # => true
-#
-# pry(main)> require './lib/ship'
-# # => true
-#
-# pry(main)> board = Board.new
-# # => #<Board:0x00007fcb0e1f6720...>
-#
-# pry(main)> cruiser = Ship.new("Cruiser", 3)
-# # => #<Ship:0x00007fcb0d92b5f0...>
-#
-# pry(main)> board.place(cruiser, ["A1", "A2", "A3"])
-#
-# pry(main)> submarine = Ship.new("Submarine", 2)
-# # => #<Ship:0x00007fcb0dace9c0...>
-#
-# pry(main)> board.valid_placement?(submarine, ["A1", "B1"])
-# # => false
