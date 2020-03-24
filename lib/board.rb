@@ -53,6 +53,26 @@ class Board
 
   end
 
+  def y_coordinates_sequential?(coordinates)
+    a_to_1 = {"A" => 1, "B" => 2, "C" => 3, "D" => 4}
+
+    y_condition1 = coordinates.all? do |coord|
+      coord[1] == coordinates[0][1]
+    end
+    index = -1
+    y_condition2 = coordinates.all? do |coord|
+      index += 1
+      a_to_1[coord[0]] == a_to_1[coordinates[0][0]] + index
+    end
+    index = -1
+    y_condition3 = coordinates.all? do |coord|
+      index += 1
+      a_to_1[coord[0]] == a_to_1[coordinates[0][0]] - index
+    end
+
+    y_condition1 && (y_condition2 || y_condition3)
+  end
+
   # a_to_1 = {"A" => 1, "B" => 2, "C" => 3, "D" => 4}
   #
   # y_condition = coordiantes.all? do |coord|
