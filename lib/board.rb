@@ -1,3 +1,4 @@
+require 'pry'
 class Board
 
   def initialize
@@ -21,8 +22,12 @@ class Board
               "D1" => "cell",
               "D2" => "cell",
               "D3" => "cell",
-              "D4" => "cell"
-    }
+              "D4" => "cell"  }
   end
+
+  def valid_coordinate?(cell_key)
+    cells.keys.include?(cell_key)
+  end
+
 
 end #final
