@@ -91,6 +91,53 @@ class BoardTest < Minitest::Test
 
   end
 
+  def test_render_displays_empty_board
+    board = Board.new
+    board.render
+    # binding.pry
+    expected = "  1 2 3 4 \n" +
+               "A . . . . \n" +
+               "B . . . . \n" +
+               "C . . . . \n" +
+               "D . . . . \n"
+  assert_equal expected, board.render
+  end
+
+  def test_render_displays_specific_misses
+    board = Board.new
+    board.render
+    board.cells["A1"].fire_upon
+    board.cells["B2"].fire_upon
+    board.cells["C3"].fire_upon
+    board.cells["D4"].fire_upon
+    # binding.pry
+    expected = "  1 2 3 4 \n" +
+               "A M . . . \n" +
+               "B . M . . \n" +
+               "C . . M . \n" +
+               "D . . . M \n"
+  assert_equal expected, board.render
+  end
+
+  def test_render_displays_ships
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    submarine = Ship.new("Submarine", 2)
+    board.place(cruiser, ["A1", "A2", "A3"])
+    board.place(submarine, ["D3", "C3"])
+    binding.pry
+
+    # binding.pry
+    expected = "  1 2 3 4 \n" +
+               "A S S S . \n" +
+               "B . . . . \n" +
+               "C . . S . \n" +
+               "D . . S . \n"
+  assert_equal expected, board.render(true)
+  end
+
+
+
 
 
 
