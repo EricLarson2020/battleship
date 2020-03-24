@@ -23,5 +23,6 @@ class Board
               "D3" => "cell",
               "D4" => "cell"
     }
+  end
 
 end #final
