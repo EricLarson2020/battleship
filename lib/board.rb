@@ -2,13 +2,13 @@ require 'pry'
 require './lib/ship'
 class Board
 
+  attr_accessor :cells
+
   def initialize
-    @x_size = 4
-    @y_size = 4
   end
 
   def cells
-    cells = {"A1" => "cell",
+    @cells = {"A1" => "cell",
               "A2" => "cell",
               "A3" => "cell",
               "A4" => "cell",
