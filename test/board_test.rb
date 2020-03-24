@@ -46,11 +46,29 @@ class BoardTest < Minitest::Test
     board = Board.new
     cruiser = Ship.new("Cruiser", 3)
 
+    assert_equal true, board.y_coordinates_sequential?(["A1", "B1", "C1"])
+    assert_equal true, board.y_coordinates_sequential?(["C2", "B2", "A2"])
+    assert_equal false, board.y_coordinates_sequential?(["A1", "B2", "C3"])
+    assert_equal false, board.y_coordinates_sequential?(["C2", "A2", "B2"])
+    assert_equal false, board.y_coordinates_sequential?(["A1", "B2"])
+  end
+
+  def test_determines_if_placement_coordinates_are_sequential_in_y_direction
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+
     assert_equal true, board.valid_placement?(cruiser, ["A1", "B1", "C1"])
     assert_equal true, board.valid_placement?(cruiser, ["C2", "B2", "A2"])
+    assert_equal true, board.valid_placement?(cruiser, ["C1", "C2", "C3"])
+    assert_equal false, board.valid_placement?(cruiser, ["E1", "E2", "E3"])
+
     assert_equal false, board.valid_placement?(cruiser, ["A1", "B2", "C3"])
     assert_equal false, board.valid_placement?(cruiser, ["C2", "A2", "B2"])
     assert_equal false, board.valid_placement?(cruiser, ["A1", "B2"])
+
   end
+
+
+
 
 end #final
