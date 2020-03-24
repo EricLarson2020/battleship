@@ -4,6 +4,43 @@ require './lib/ship'
 require "pry"
 class Gameplay
 
+def welcome
+  p "Welcome to BATTLESHIP"
+  p "Enter p to play. Enter q to quit."
+
+  input = gets.chomp
+  if input = "p"
+
+                "  1 2 3 4 \n" +
+               "A . . . . \n" +
+               "B . . . . \n" +
+               "C . . . . \n" +
+               "D . . . . \n"
+
+    p "I have laid out my ships on the grid."
+    p "You now need to lay out your two ships."
+    p "The Cruiser is three units long and the Submarine is two units long."
+    p "  1 2 3 4"
+    p "A . . . ."
+    p "B . . . ."
+    p "C . . . ."
+    p "D . . . ."
+  end
+end
+
+  def cruiser_assignment
+    input_2 = gets.chomp
+    input_2 = input_2.split(" ")
+    if board.valid_placement?(cruiser, input_2) != true
+      loop do until board.valid_placement?(cruiser, input_2) == true
+        p "Those are invalid coordinates. Please try again:"
+        input_2 = gets.chomp
+        input_2 = input_2.split(" ")
+      end
+    end
+  end
+
+  def 
 
 
   def begin
@@ -36,11 +73,16 @@ class Gameplay
 
 
       input_2 = gets.chomp
-         input_2.valid_placement?(cruiser, 3) == true
       input_2 = input_2.split(" ")
-      # if input_2.include? (" ")
-      #   input.gsub(" ","")
-
+if board.valid_placement?(cruiser, input_2) != true
+      loop do until board.valid_placement?(cruiser, input_2) == true
+        p "Those are invalid coordinates. Please try again:"
+        input_2 = gets.chomp
+        input_2 = input_2.split(" ")
+      end
+    end
+  end
+      # input_2 = input_2.split(" ")
       board.place(cruiser, input_2)
       puts board.render(true)
 
