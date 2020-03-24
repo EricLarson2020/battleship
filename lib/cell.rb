@@ -32,8 +32,10 @@ class Cell
   def render(optional = false)
     if @fire_upon == false && !optional
       "."
-    elsif @fire_upon == false && optional
+    elsif @fire_upon == false && optional && !empty?
       "S"
+    elsif @fire_upon == false && optional && empty?
+      "."
     elsif @fire_upon == true && @ship == nil
       "M"
     elsif @fire_upon == true && @ship != nil && ship.health != 0
