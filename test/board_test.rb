@@ -85,8 +85,8 @@ class BoardTest < Minitest::Test
     assert_equal "Cruiser", board.cells["A1"].ship.name
     assert_equal "Cruiser", board.cells["A2"].ship.name
     assert_equal "Cruiser", board.cells["A3"].ship.name
-    assert_equal nil, board.cells["A4"].ship
-    assert_equal nil, board.cells["B1"].ship
+    assert_nil board.cells["A4"].ship
+    assert_nil board.cells["B1"].ship
   end
 
   def test_placed_ships_cannot_overlap
