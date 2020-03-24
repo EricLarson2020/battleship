@@ -87,12 +87,42 @@ class BoardTest < Minitest::Test
     assert_equal "Cruiser", board.cells["A3"].ship.name
     assert_equal nil, board.cells["A4"].ship
     assert_equal nil, board.cells["B1"].ship
-
-
   end
 
+  def test_ships_cannot_over_lap
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    board.place(cruiser, ["A1", "A2", "A3"])
+    submarine = Ship.new("Submarine", 2)
+    assert_equal true, board.ships_overlap?(submarine, ["A1", "B1"])
+  end
 
-
-
+  def test_placed_ships_cannot_overlap
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    board.place(cruiser, ["A1", "A2", "A3"])
+    submarine = Ship.new("Submarine", 2)
+    assert_equal false, board.valid_placement?(submarine, ["A1", "B1"])
+  end
 
 end #final
+
+# pry(main)> require './lib/board'
+# # => true
+#
+# pry(main)> require './lib/ship'
+# # => true
+#
+# pry(main)> board = Board.new
+# # => #<Board:0x00007fcb0e1f6720...>
+#
+# pry(main)> cruiser = Ship.new("Cruiser", 3)
+# # => #<Ship:0x00007fcb0d92b5f0...>
+#
+# pry(main)> board.place(cruiser, ["A1", "A2", "A3"])
+#
+# pry(main)> submarine = Ship.new("Submarine", 2)
+# # => #<Ship:0x00007fcb0dace9c0...>
+#
+# pry(main)> board.valid_placement?(submarine, ["A1", "B1"])
+# # => false
