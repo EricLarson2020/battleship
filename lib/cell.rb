@@ -5,4 +5,9 @@ class Cell
     @coordinate = coordinate
     @ship = ship
   end
+
+  def empty?
+    ship == nil
+  end
+  
 end

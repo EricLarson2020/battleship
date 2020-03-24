@@ -20,12 +20,15 @@ class ShipTest < Minitest::Test
     assert_equal nil, cell.ship
   end
 
+  def test_if_cell_is_empty
+    cell = Cell.new("B4")
+    assert_equal true, cell.empty?
+  end
+
+
+
 end
-# pry(main)> cell = Cell.new("B4")
-# # => #<Cell:0x00007f84f0ad4720...>
-#
-# pry(main)> cell.coordinate
-# # => "B4"
+
 #
 # pry(main)> cell.ship
 # # => nil
