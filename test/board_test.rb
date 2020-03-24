@@ -85,8 +85,8 @@ class BoardTest < Minitest::Test
     assert_equal "Cruiser", board.cells["A1"].ship.name
     assert_equal "Cruiser", board.cells["A2"].ship.name
     assert_equal "Cruiser", board.cells["A3"].ship.name
-    assert_equal nil, board.cells["A4"].ship
-    assert_equal nil, board.cells["B1"].ship
+    assert_nil board.cells["A4"].ship
+    assert_nil board.cells["B1"].ship
 
 
   end
@@ -125,7 +125,6 @@ class BoardTest < Minitest::Test
     submarine = Ship.new("Submarine", 2)
     board.place(cruiser, ["A1", "A2", "A3"])
     board.place(submarine, ["D3", "C3"])
-    binding.pry
 
     # binding.pry
     expected = "  1 2 3 4 \n" +
@@ -136,7 +135,50 @@ class BoardTest < Minitest::Test
   assert_equal expected, board.render(true)
   end
 
+  def test_hit_and_misses_on_the_board
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    board.place(cruiser, ["A1", "A2", "A3"])
+    #binding.pry
+    board.cells["A1"].fire_upon
+    board.cells["A2"].fire_upon
+    board.cells["B1"].fire_upon
+    board.cells["C1"].fire_upon
+    board.cells["D3"].fire_upon
 
+
+    # binding.pry
+    expected = "  1 2 3 4 \n" +
+               "A H H S . \n" +
+               "B M . . . \n" +
+               "C M . . . \n" +
+               "D . . M . \n"
+    assert_equal expected, board.render(true)
+    assert_equal false, board.cells["A1"].ship.sunk?
+  end
+
+  def test_sink_a_ship
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    board.place(cruiser, ["A1", "A2", "A3"])
+    #binding.pry
+    board.cells["A1"].fire_upon
+    board.cells["A2"].fire_upon
+    board.cells["B1"].fire_upon
+    board.cells["C1"].fire_upon
+    board.cells["D3"].fire_upon
+    board.cells["A3"].fire_upon
+
+
+    # binding.pry
+    expected = "  1 2 3 4 \n" +
+               "A X X X . \n" +
+               "B M . . . \n" +
+               "C M . . . \n" +
+               "D . . M . \n"
+    assert_equal expected, board.render(true)
+    assert_equal true, board.cells["A1"].ship.sunk?
+  end
 
 
 
