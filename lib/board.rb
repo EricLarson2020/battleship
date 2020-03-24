@@ -32,11 +32,12 @@ class Board
 
   def x_coordinates_sequential?(coordinates)
     #test if sequential in x direction
+    #the first element of the coord "A" must be cosntant
     x_condition1 = coordinates.all? do |coord|
       coord[0] == coordinates[0][0]
     end
     #start at -1 for index = 0
-    #ascending
+    #the 2nd element must be incrementing
     index = -1
     x_condition2 = coordinates.all? do |coord|
       index += 1
@@ -55,15 +56,17 @@ class Board
 
   def y_coordinates_sequential?(coordinates)
     a_to_1 = {"A" => 1, "B" => 2, "C" => 3, "D" => 4}
-
+    #the second element of the string coord "1" must be constant
     y_condition1 = coordinates.all? do |coord|
       coord[1] == coordinates[0][1]
     end
+    #the first element of the string coord "A" must be incrementing
     index = -1
     y_condition2 = coordinates.all? do |coord|
       index += 1
       a_to_1[coord[0]] == a_to_1[coordinates[0][0]] + index
     end
+    #decending
     index = -1
     y_condition3 = coordinates.all? do |coord|
       index += 1
@@ -76,7 +79,7 @@ class Board
   def valid_placement?(ship, coordinates)
     condition1 = y_coordinates_sequential?(coordinates) || x_coordinates_sequential?(coordinates)
     condition2 = coordinates.length == ship.length
-    condition1 && condition2 
+    condition1 && condition2
   end
 
 
