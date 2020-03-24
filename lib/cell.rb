@@ -15,12 +15,17 @@ class Cell
     @ship = cruiser
   end
 
-def fired_upon?
-  @fire_upon
-end
+  def fired_upon?
+    @fire_upon
+  end
 
-def fire_upon
-  @fire_upon = true
-  ship.hit
-end
+  def fire_upon
+    @fire_upon = true
+    ship.hit
+  end
+
+  def render
+    @fire_upon == false
+    "."
+  end
 end
