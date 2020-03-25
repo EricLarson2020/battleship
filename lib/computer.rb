@@ -64,7 +64,10 @@ class Computer
     adj3 = letter + num_plus
     adj4 = letter + num_minus
 
-    p [adj1, adj2, adj3, adj4]
+    adj_cells = [adj1, adj2, adj3, adj4]
+    adj_cells2 = adj_cells.reject do |cell|
+      cell[1].to_i < 1 || cell[1].to_i > 4 || cell[0].ord < 65 || cell[0].ord > 68
+    end
 
 
   end

@@ -78,8 +78,9 @@ class ComputerTest < Minitest::Test
     submarine = Ship.new("Sumbarine", 2)
     computer = Computer.new(board1, board2)
 
-    computer.adjacent_cells("C2")
+    computer.adjacent_cells("A1")
 
+    assert_equal ["B2", "D2", "C3", "C1"], computer.adjacent_cells("C2")
 
   end
 
