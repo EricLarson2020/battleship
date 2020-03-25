@@ -2,12 +2,12 @@ require "pry"
 
 class Computer
 
-  attr_reader :board, :cell_list, :attack_cell, :ship1, :ship2
-  def initialize(board)
-    @board = board
-    @cell_list = @board.cells.keys
-    @attack_cell_list = @board.cells.keys
-    @place_cell_list = @board.cells.keys
+  attr_reader :board1, :cell_list, :attack_cell, :ship1, :ship2
+  def initialize(board1, board2 = false)
+    @board1 = board1
+    @cell_list = @board1.cells.keys
+    @attack_cell_list = @board1.cells.keys
+    @place_cell_list = @board1.cells.keys
     @attack_cell = nil
     @ship1 = Ship.new("Cruiser", 3)
     @ship2 = Ship.new("Submarine", 2)
@@ -28,7 +28,7 @@ class Computer
 
   def auto_coordinates(ship)
     ship_cells = []
-    until board.valid_placement?(ship, ship_cells) do
+    until board1.valid_placement?(ship, ship_cells) do
       ship_cells = @place_cell_list.shuffle[0..(ship.length-1)]
     end
     ship_cells.each do |cell|
@@ -38,10 +38,10 @@ class Computer
     ship_cells
   end
 
-  if status is hit
-    attack adjacent
-    if status is missed
-      do random
+  # if status is hit
+  #   attack adjacent
+  #   if status is missed
+  #     do random
 
 
 end
