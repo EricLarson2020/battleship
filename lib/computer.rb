@@ -6,8 +6,8 @@ class Computer
   def initialize(board)
     @board = board
     @cell_list = @board.cells.keys
-    @attack_cell_list = @cell_list
-    @place_cell_list = @cell_list
+    @attack_cell_list = @board.cells.keys
+    @place_cell_list = @board.cells.keys
     @attack_cell = nil
     @ship1 = Ship.new("Cruiser", 3)
     @ship2 = Ship.new("Submarine", 2)
@@ -18,6 +18,7 @@ class Computer
       @attack_cell = @attack_cell_list.shuffle[0]
       index = @attack_cell_list.index(attack_cell)
       @attack_cell_list.delete_at(index)
+      p @attack_cell_list
       @attack_cell
     else
       @attack_cell = nil

@@ -1,8 +1,6 @@
-require './lib/board'
-require './lib/cell'
-require './lib/ship'
-require './lib/computer'
+
 require "pry"
+
 class Gameplay
 attr_reader :board1, :cruiser
   def initialize(board1, board2, computer = nil)
@@ -28,29 +26,27 @@ attr_reader :board1, :cruiser
   end
 
   def play_loop
-    # binding.pry
     index = 0
     until game_over?
       player_shot
       if !game_over?
         computer_shot
-        puts "cruiser1 health: #{@cruiser1.health}"
-        puts "sub 1 health: #{@submarine1.health}"
-        puts "cruiser2 health: #{@cruiser2.health}"
-        puts "sub 2 health: #{@submarine2.health}"
+        # puts "cruiser1 health: #{@cruiser1.health}"
+        # puts "sub 1 health: #{@submarine1.health}"
+        # puts "cruiser2 health: #{@cruiser2.health}"
+        # puts "sub 2 health: #{@submarine2.health}"
       end
       index += 1
-      # if index >= 1
-      #      binding.pry
+      # if index >= 4
+      #   binding.pry
       # end
     end
-    if @player1_sunk
-      p "Computer has won the game!"
-    elsif @player2_sunk
-      p "Human has won the game!"
+
+    if player_loss?
+       p "Computer has won the game!"
+    elsif computer_loss?
+       p "Human has won the game!"
     end
-
-
 
   end
 
@@ -163,44 +159,34 @@ attr_reader :board1, :cruiser
         p "Computer sunk your #{@board1.cells[input].ship.name}!"
       end
     end
-    # puts "===========Computer Board==========="
-    # @board2.render(true)
-    # puts "===========PLAYER BOARD============="
-    # @board1.render(true)
     puts "===========Computer Board==========="
     @board2.render(true)
     puts "===========PLAYER BOARD============="
     @board1.render(true)
   end
 
+  def player_loss?
+    if @cruiser1.sunk? && @submarine1.sunk?
+      true
+    else
+      false
+    end
+  end
+
+  def computer_loss?
+    if @cruiser2.sunk? && @submarine2.sunk?
+      true
+    else
+      false
+    end
+  end
+
   def game_over?
-
-    ship_list_player = @board1.cells.find_all do |cell|
-      cell[1].ship != nil
-    end
-    ship_list_computer = @board2.cells.find_all do |cell|
-      cell[1].ship != nil
-    end
-
-    if ship_list_player != []
-      @player1_sunk = ship_list_player.all? do |cell|
-        cell[1].ship.sunk?
-      end
+    if player_loss? || computer_loss?
+      true
     else
-      @player1_sunk = false
+      false
     end
-
-    if ship_list_computer != []
-      @player2_sunk = ship_list_computer.all? do |cell|
-        cell[1].ship.sunk?
-      end
-    else
-    @player2_sunk = false
-    end
-    # if @player1_sunk || @player2_sunk
-    #   binding.pry
-    # end
-    @player1_sunk || @player2_sunk
   end
 
 
