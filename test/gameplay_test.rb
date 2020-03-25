@@ -8,8 +8,13 @@ require './lib/gameplay'
 class ShipTest < Minitest::Test
 
   def test_the_welcome_method
-    game = Gameplay.new
-    assert_equal game.welcome
+    board = Board.new
+    game = Gameplay.new(board)
+    submarine =Ship.new("submarine", 2)
+    cruiser = Ship.new("cruiser", 3)
+    game.welcome
+    game.cruiser_assignment
+    game.submarine_assignment
 
 
 
