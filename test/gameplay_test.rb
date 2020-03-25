@@ -12,11 +12,11 @@ class ShipTest < Minitest::Test
     game = Gameplay.new(board)
     submarine =Ship.new("submarine", 2)
     cruiser = Ship.new("cruiser", 3)
-    game.welcome
-    game.cruiser_assignment
-    game.submarine_assignment
+    # game.welcome
+    # game.cruiser_assignment
+    # game.submarine_assignment
 
-
+game.start
 
   end
 
