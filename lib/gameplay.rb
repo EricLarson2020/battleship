@@ -31,15 +31,8 @@ attr_reader :board1, :cruiser
       player_shot
       if !game_over?
         computer_shot
-        # puts "cruiser1 health: #{@cruiser1.health}"
-        # puts "sub 1 health: #{@submarine1.health}"
-        # puts "cruiser2 health: #{@cruiser2.health}"
-        # puts "sub 2 health: #{@submarine2.health}"
       end
       index += 1
-      # if index >= 4
-      #   binding.pry
-      # end
     end
 
     if player_loss?
@@ -188,6 +181,5 @@ attr_reader :board1, :cruiser
       false
     end
   end
-
 
 end # final

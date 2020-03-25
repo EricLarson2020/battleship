@@ -1,7 +1,7 @@
 
 
 class Cell
-  attr_reader :coordinate, :fire_upon
+  attr_reader :coordinate, :fire_upon, :status
   attr_accessor :ship
 
   def initialize(coordinate, ship = nil)
@@ -31,16 +31,20 @@ class Cell
 
   def render(optional = false)
     if @fire_upon == false && !optional
+      @status = "Not_hit"
       "."
     elsif @fire_upon == false && optional && !empty?
       "S"
     elsif @fire_upon == false && optional && empty?
       "."
     elsif @fire_upon == true && @ship == nil
+      @status = "Missed"
       "M"
     elsif @fire_upon == true && @ship != nil && @ship.health != 0
+      @status = "Hit"
       "H"
     elsif @ship != nil && @ship.health == 0
+      @status = "sunk"
       "X"
     end
 

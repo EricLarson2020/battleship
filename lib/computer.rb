@@ -14,6 +14,7 @@ class Computer
   end
 
   def attack
+    binding.pry
     if !@attack_cell_list.empty?
       @attack_cell = @attack_cell_list.shuffle[0]
       index = @attack_cell_list.index(attack_cell)
@@ -36,6 +37,11 @@ class Computer
     end
     ship_cells
   end
+
+  if status is hit
+    attack adjacent
+    if status is missed
+      do random
 
 
 end

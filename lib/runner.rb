@@ -11,4 +11,3 @@ computer = Computer.new(board2)
 game = Gameplay.new(board1, board2, computer)
 
 game.start
-# game.play_loop
