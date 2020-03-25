@@ -127,12 +127,12 @@ class Board
 
   def render(optional = false)
 
-    board_layout = "  1 2 3 4 \n" +
+    puts board_layout = "  1 2 3 4 \n" +
     "A #{cells["A1"].render(optional)} #{cells["A2"].render(optional)} #{cells["A3"].render(optional)} #{cells["A4"].render(optional)} \n" +
     "B #{cells["B1"].render(optional)} #{cells["B2"].render(optional)} #{cells["B3"].render(optional)} #{cells["B4"].render(optional)} \n" +
     "C #{cells["C1"].render(optional)} #{cells["C2"].render(optional)} #{cells["C3"].render(optional)} #{cells["C4"].render(optional)} \n" +
     "D #{cells["D1"].render(optional)} #{cells["D2"].render(optional)} #{cells["D3"].render(optional)} #{cells["D4"].render(optional)} \n"
-    puts board_layout
+    board_layout
   end
 
 

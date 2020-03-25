@@ -11,7 +11,7 @@ class Cell
   end
 
   def empty?
-    ship == nil
+    @ship == nil
   end
 
   def place_ship(cruiser)
@@ -24,8 +24,8 @@ class Cell
 
   def fire_upon
     @fire_upon = true
-    if ship != nil
-    ship.hit
+    if @ship != nil
+    @ship.hit
     end
   end
 
@@ -40,7 +40,7 @@ class Cell
       "M"
     elsif @fire_upon == true && @ship != nil && @ship.health != 0
       "H"
-    else
+    elsif @ship != nil && @ship.health == 0
       "X"
     end
 

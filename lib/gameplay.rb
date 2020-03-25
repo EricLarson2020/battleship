@@ -9,8 +9,10 @@ attr_reader :board1, :cruiser
     @board1 = board1
     @board2 = board2
     @computer = computer
-    @cruiser = Ship.new("Cruiser", 3)
-    @submarine = Ship.new("Submarine", 2)
+    @cruiser1 = Ship.new("Cruiser", 3)
+    @submarine1 = Ship.new("Submarine", 2)
+    @cruiser2 = Ship.new("Cruiser", 3)
+    @submarine2 = Ship.new("Submarine", 2)
     @player_cell_list = board1.cells.keys
   end
 
@@ -22,15 +24,22 @@ attr_reader :board1, :cruiser
   end
 
   def play_loop
+    # binding.pry
+    index = 0
     until game_over?
       player_shot
       computer_shot
+      index += 1
+      # if index >= 1
+      #      binding.pry
+      # end
     end
     if @player1_sunk
       p "Computer has won the game!"
     elsif @player2_sunk
       p "Human has won the game!"
     end
+
 
 
   end
@@ -40,13 +49,9 @@ attr_reader :board1, :cruiser
     p "Enter p to play. Enter q to quit."
 
     input = gets.chomp
-    if input == "p"
+    if input.downcase == "p"
 
-                "  1 2 3 4 \n" +
-               "A . . . . \n" +
-               "B . . . . \n" +
-               "C . . . . \n" +
-               "D . . . . \n"
+
 
       p "I have laid out my ships on the grid."
       p "You now need to lay out your two ships."
@@ -65,14 +70,14 @@ attr_reader :board1, :cruiser
     input_2 = gets.chomp
     input_2 = input_2.split(" ")
 
-    if @board1.valid_placement?(@cruiser, input_2) != true
-       until @board1.valid_placement?(@cruiser, input_2)
+    if @board1.valid_placement?(@cruiser1, input_2) != true
+       until @board1.valid_placement?(@cruiser1, input_2)
         p "Those are invalid coordinates. Please try again:"
         input_2 = gets.chomp
         input_2 = input_2.split(" ")
       end
     end
-    @board1.place(@cruiser, input_2)
+    @board1.place(@cruiser1, input_2)
     @board1.render(true)
   end
 
@@ -80,21 +85,21 @@ attr_reader :board1, :cruiser
     p "Enter the squares for the Submarine (2 spaces):"
     input_3 = gets.chomp
     input_3 = input_3.split(" ")
-    if @board1.valid_placement?(@submarine, input_3) != true
-       until @board1.valid_placement?(@submarine, input_3)
+    if @board1.valid_placement?(@submarine1, input_3) != true
+       until @board1.valid_placement?(@submarine1, input_3)
         p "Those are invalid coordinates. Please try again:"
         input_3 = gets.chomp
         input_3 = input_3.split(" ")
       end
     end
-    @board1.place(@submarine, input_3)
+    @board1.place(@submarine1, input_3)
     @board1.render(true)
   end
 
   def computer_placement
     #binding.pry
-    @board2.place(@cruiser, @computer.auto_coordinates(@cruiser))
-    @board2.place(@submarine, @computer.auto_coordinates(@submarine))
+    @board2.place(@cruiser2, @computer.auto_coordinates(@cruiser2))
+    @board2.place(@submarine2, @computer.auto_coordinates(@submarine2))
     puts "===========Computer Board==========="
     @board2.render(true)
     puts "===========PLAYER BOARD============="
@@ -107,6 +112,9 @@ attr_reader :board1, :cruiser
     until @player_cell_list.include?(input)
       puts "Those are invalid coordinates. Please try again"
       input = gets.chomp
+      if input == "pry"
+        binding.pry
+      end
     end
     #delete player input from avaliable cell list
     index = @player_cell_list.index(input)
@@ -118,6 +126,9 @@ attr_reader :board1, :cruiser
       p "Your shot on #{input} was a miss."
     elsif @board2.cells[input].fired_upon? && @board2.cells[input].ship != nil
       p "Your shot on #{input} was a hit!"
+      if @board2.cells[input].ship.sunk?
+        p "You sunk computer's #{@board2.cells[input].ship.name}!"
+      end
     end
     puts "===========Computer Board==========="
     @board2.render(true)
@@ -134,37 +145,43 @@ attr_reader :board1, :cruiser
       p "Computer's shot on #{input} was a miss."
     elsif @board1.cells[input].fired_upon? && @board1.cells[input].ship != nil
       p "Computer's shot on #{input} was a hit!"
+      if @board1.cells[input].ship.sunk?
+        p "Computer sunk your #{@board1.cells[input].ship.name}!"
+      end
     end
-    puts "===========Computer Board==========="
-    @board2.render(true)
-    puts "===========PLAYER BOARD============="
-    @board1.render(true)
+    # puts "===========Computer Board==========="
+    # @board2.render(true)
+    # puts "===========PLAYER BOARD============="
+    # @board1.render(true)
   end
 
   def game_over?
 
-    ship_list1 = @board1.cells.find_all do |cell|
+    ship_list_player = @board1.cells.find_all do |cell|
       cell[1].ship != nil
     end
-    ship_list2 = @board2.cells.find_all do |cell|
+    ship_list_computer = @board2.cells.find_all do |cell|
       cell[1].ship != nil
     end
 
-    if ship_list1 != []
-      @player2_sunk = ship_list1.all? do |cell|
+    if ship_list_player != []
+      @player1_sunk = ship_list_player.all? do |cell|
         cell[1].ship.sunk?
       end
     else
-      @player2_sunk = false
+      @player1_sunk = false
     end
 
-    if ship_list2 != []
-      @player1_sunk = ship_list2.all? do |cell|
+    if ship_list_computer != []
+      @player2_sunk = ship_list_computer.all? do |cell|
         cell[1].ship.sunk?
       end
     else
-    @player1_sunk = false
+    @player2_sunk = false
     end
+    # if @player1_sunk || @player2_sunk
+    #   binding.pry
+    # end
     @player1_sunk || @player2_sunk
   end
 
