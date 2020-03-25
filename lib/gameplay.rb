@@ -10,8 +10,6 @@ attr_reader :board, :cruiser
     @submarine = Ship.new("Submarine", 2)
   end
 
-
-
   def welcome
     p "Welcome to BATTLESHIP"
     p "Enter p to play. Enter q to quit."
@@ -48,8 +46,6 @@ attr_reader :board, :cruiser
         input_2 = gets.chomp
         input_2 = input_2.split(" ")
       end
-
-
     end
     @board.place(@cruiser, input_2)
     @board.render(true)
@@ -65,19 +61,18 @@ attr_reader :board, :cruiser
         input_3 = gets.chomp
         input_3 = input_3.split(" ")
       end
-
     end
     @board.place(@submarine, input_3)
     @board.render(true)
   end
 
-
+     
   def start
     welcome
-  cruiser_assignment
-  submarine_assignment
+    cruiser_assignment
+    submarine_assignment
 
   end
 
+end # final
 
-end
