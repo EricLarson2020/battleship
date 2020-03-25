@@ -10,6 +10,8 @@ attr_reader :board, :cruiser
     @submarine = Ship.new("Submarine", 2)
   end
 
+
+
   def welcome
     p "Welcome to BATTLESHIP"
     p "Enter p to play. Enter q to quit."
@@ -46,6 +48,8 @@ attr_reader :board, :cruiser
         input_2 = gets.chomp
         input_2 = input_2.split(" ")
       end
+
+
     end
     @board.place(@cruiser, input_2)
     @board.render(true)
@@ -61,18 +65,42 @@ attr_reader :board, :cruiser
         input_3 = gets.chomp
         input_3 = input_3.split(" ")
       end
+
     end
     @board.place(@submarine, input_3)
     @board.render(true)
   end
 
-     
+  def display_the_board
+    p "=============COMPUTER BOARD============="
+    board.render(false)
+    p "==============PLAYER BOARD=============="
+    board.render(true)
+  end
+
+  def fire
+    p "Enter the coordinate for your shot:"
+    input = gets.chomp
+    input.to_s
+    letters = ["A", "B", "C", "D"]
+    numbers = ["1", "2", "3", "4"]
+
+    until letters.include?(input[0]) && numbers.include?(input[1])
+      p "Please enter a valid coordinate:"
+      input = gets.chomp
+      input.to_s
+
+    end
+    board.cells[input].fire_upon
+  end
+
+
   def start
     welcome
-    cruiser_assignment
-    submarine_assignment
+  cruiser_assignment
+  submarine_assignment
 
   end
 
-end # final
 
+end
