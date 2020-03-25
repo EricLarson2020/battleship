@@ -6,42 +6,24 @@ require './lib/cell'
 require './lib/gameplay'
 
 class ShipTest < Minitest::Test
-
+  
   def test_it_exists
     board = Board.new
     gameplay = Gameplay.new(board)
 
     assert_instance_of Gameplay, gameplay
   end
-
-  def test_p_input_starts_the_game
-    skip
+  
+  def test_the_welcome_method
     board = Board.new
-    gameplay = Gameplay.new(board)
-    cruiser = Ship.new("Cruiser", 3)
+    game = Gameplay.new(board)
+    submarine =Ship.new("submarine", 2)
+    cruiser = Ship.new("cruiser", 3)
+    # game.welcome
+    # game.cruiser_assignment
+    # game.submarine_assignment
 
-    gameplay.welcome
-
-    assert_equal true, gameplay.play
-
-  end
-
-  def test_it_prompts_for_ship_inputs
-    skip
-    board = Board.new
-    gameplay = Gameplay.new(board)
-    cruiser = Ship.new("Cruiser", 3)
-
-    gameplay.cruiser_placement_prompt
-
-  end
-
-  def test_it_places_valid_ships_on_board
-    board = Board.new
-    gameplay = Gameplay.new(board)
-    cruiser = Ship.new("Cruiser", 3)
-
-    gameplay.cruiser_placement
+    game.start
   end
 
 

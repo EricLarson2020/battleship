@@ -132,7 +132,7 @@ class Board
     "B #{cells["B1"].render(optional)} #{cells["B2"].render(optional)} #{cells["B3"].render(optional)} #{cells["B4"].render(optional)} \n" +
     "C #{cells["C1"].render(optional)} #{cells["C2"].render(optional)} #{cells["C3"].render(optional)} #{cells["C4"].render(optional)} \n" +
     "D #{cells["D1"].render(optional)} #{cells["D2"].render(optional)} #{cells["D3"].render(optional)} #{cells["D4"].render(optional)} \n"
-    board_layout
+    puts board_layout
   end
 
 
