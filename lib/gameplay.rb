@@ -17,10 +17,14 @@ attr_reader :board1, :cruiser
   end
 
   def start
+    @play_game = false
     welcome
-    cruiser_assignment
-    submarine_assignment
-    computer_placement
+    if @play_game == true
+      cruiser_assignment
+      submarine_assignment
+      computer_placement
+      play_loop
+    end
   end
 
   def play_loop
@@ -28,7 +32,13 @@ attr_reader :board1, :cruiser
     index = 0
     until game_over?
       player_shot
-      computer_shot
+      if !game_over?
+        computer_shot
+        puts "cruiser1 health: #{@cruiser1.health}"
+        puts "sub 1 health: #{@submarine1.health}"
+        puts "cruiser2 health: #{@cruiser2.health}"
+        puts "sub 2 health: #{@submarine2.health}"
+      end
       index += 1
       # if index >= 1
       #      binding.pry
@@ -45,14 +55,23 @@ attr_reader :board1, :cruiser
   end
 
   def welcome
-    p "Welcome to BATTLESHIP"
-    p "Enter p to play. Enter q to quit."
+    input = ''
+    until input.downcase == 'p' || input.downcase == 'q'
+      p "Welcome to BATTLESHIP"
+      p "Enter p to play. Enter q to quit."
+      input = gets.chomp
+      if input.downcase == "p"
+        @play_game = true
+      elsif input.downcase == 'q'
+        @play_game = false
+        "Come back and play anytime!"
+        return
+      else
+        p "Invalid entry"
+      end
+    end
 
-    input = gets.chomp
-    if input.downcase == "p"
-
-
-
+    if @play_game
       p "I have laid out my ships on the grid."
       p "You now need to lay out your two ships."
       p "The Cruiser is three units long and the Submarine is two units long."
@@ -62,6 +81,7 @@ attr_reader :board1, :cruiser
       p "C . . . ."
       p "D . . . ."
     end
+
   end
 
 
@@ -112,9 +132,6 @@ attr_reader :board1, :cruiser
     until @player_cell_list.include?(input)
       puts "Those are invalid coordinates. Please try again"
       input = gets.chomp
-      if input == "pry"
-        binding.pry
-      end
     end
     #delete player input from avaliable cell list
     index = @player_cell_list.index(input)
@@ -130,22 +147,19 @@ attr_reader :board1, :cruiser
         p "You sunk computer's #{@board2.cells[input].ship.name}!"
       end
     end
-    puts "===========Computer Board==========="
-    @board2.render(true)
-    puts "===========PLAYER BOARD============="
-    @board1.render(true)
+
 
   end
 
   def computer_shot
     input = @computer.attack
     @board1.cells[input].fire_upon
-    @board1.cells[input].fire_upon
     if @board1.cells[input].fired_upon? && @board1.cells[input].ship == nil
       p "Computer's shot on #{input} was a miss."
     elsif @board1.cells[input].fired_upon? && @board1.cells[input].ship != nil
       p "Computer's shot on #{input} was a hit!"
       if @board1.cells[input].ship.sunk?
+      #  binding.pry
         p "Computer sunk your #{@board1.cells[input].ship.name}!"
       end
     end
@@ -153,6 +167,10 @@ attr_reader :board1, :cruiser
     # @board2.render(true)
     # puts "===========PLAYER BOARD============="
     # @board1.render(true)
+    puts "===========Computer Board==========="
+    @board2.render(true)
+    puts "===========PLAYER BOARD============="
+    @board1.render(true)
   end
 
   def game_over?
