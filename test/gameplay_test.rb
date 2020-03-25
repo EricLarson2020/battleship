@@ -79,5 +79,24 @@ class ShipTest < Minitest::Test
     game.game_over?
   end
 
+  def test_game_over
+    board1 = Board.new
+    board2 = Board.new
+    computer = Computer.new(board2)
+    game = Gameplay.new(board1, board2, computer)
+    # submarine =Ship.new("submarine", 2)
+    # cruiser = Ship.new("cruiser", 3)
+    # game.welcome
+    # game.cruiser_assignment
+    # game.submarine_assignment
+
+    # game.start
+    cruiser = Ship.new("Cruiser", 3)
+    board1.place(cruiser, ["A1", "A2", "A3"])
+    board2.place(cruiser, ["B3", "C3", "D3"])
+
+    game.play_loop
+  end
+
 
 end

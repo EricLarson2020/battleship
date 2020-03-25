@@ -26,7 +26,11 @@ attr_reader :board1, :cruiser
       player_shot
       computer_shot
     end
-    
+    if @player1_sunk
+      p "Computer has won the game!"
+    elsif @player2_sunk
+      p "Human has won the game!"
+    end
 
 
   end
@@ -115,6 +119,10 @@ attr_reader :board1, :cruiser
     elsif @board2.cells[input].fired_upon? && @board2.cells[input].ship != nil
       p "Your shot on #{input} was a hit!"
     end
+    puts "===========Computer Board==========="
+    @board2.render(true)
+    puts "===========PLAYER BOARD============="
+    @board1.render(true)
 
   end
 
@@ -127,6 +135,10 @@ attr_reader :board1, :cruiser
     elsif @board1.cells[input].fired_upon? && @board1.cells[input].ship != nil
       p "Computer's shot on #{input} was a hit!"
     end
+    puts "===========Computer Board==========="
+    @board2.render(true)
+    puts "===========PLAYER BOARD============="
+    @board1.render(true)
   end
 
   def game_over?
@@ -139,19 +151,19 @@ attr_reader :board1, :cruiser
     end
 
     if ship_list1 != []
-      @player1_sunk = ship_list1.all? do |cell|
+      @player2_sunk = ship_list1.all? do |cell|
         cell[1].ship.sunk?
       end
     else
-      @player1_sunk = false
+      @player2_sunk = false
     end
 
     if ship_list2 != []
-      @player2_sunk = ship_list2.all? do |cell|
+      @player1_sunk = ship_list2.all? do |cell|
         cell[1].ship.sunk?
       end
     else
-    @player2_sunk = false
+    @player1_sunk = false
     end
     @player1_sunk || @player2_sunk
   end

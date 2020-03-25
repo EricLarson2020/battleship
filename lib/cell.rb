@@ -38,7 +38,7 @@ class Cell
       "."
     elsif @fire_upon == true && @ship == nil
       "M"
-    elsif @fire_upon == true && @ship != nil && ship.health != 0
+    elsif @fire_upon == true && @ship != nil && @ship.health != 0
       "H"
     else
       "X"
