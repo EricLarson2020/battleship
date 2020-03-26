@@ -9,7 +9,7 @@ class Computer
     @cell_list = @board1.cells.keys
     @attack_cell_list = @board1.cells.keys
     @place_cell_list = @board1.cells.keys
-    @attack_cell = nil
+    @attack_cell = ''
     @ship1 = Ship.new("Cruiser", 3)
     @ship2 = Ship.new("Submarine", 2)
   end
@@ -32,10 +32,9 @@ class Computer
       @attack_cell = @attack_cell_list.shuffle[0]
       index = @attack_cell_list.index(attack_cell)
       @attack_cell_list.delete_at(index)
-      @attack_cell_list
       @attack_cell
     else
-      @attack_cell = nil
+      @attack_cell = ''
     end
   end
   # if status is hit
@@ -43,10 +42,27 @@ class Computer
   #   if status is missed
   #     do random
   def smart_attack
-    if @board2.cells[@attack_cell].status == :missed || @board2.cells[@attack_cell].status == :sunk
+  #  binding.pry
+    if @attack_cell == ''
       attack
-    elsif @board.cells[@attack_cell].status
-      #code
+    elsif @board2.cells[@attack_cell].status == :missed || @board2.cells[@attack_cell].status == :sunk
+      puts "random attack"
+      attack
+
+    elsif @board2.cells[@attack_cell].status == :hit
+      smart_cells = adjacent_cells(@attack_cell).find_all do |cell|
+        @attack_cell_list.include?(cell)
+      end
+      # binding.pry
+      if smart_cells == []
+        attack
+      else
+        @attack_cell = smart_cells.shuffle[0]
+        index = @attack_cell_list.index(@attack_cell)
+        @attack_cell_list.delete_at(index)
+        puts "SMART ATTACK!"
+        @attack_cell
+      end
     end
   end
 
@@ -68,9 +84,9 @@ class Computer
     adj_cells2 = adj_cells.reject do |cell|
       cell[1].to_i < 1 || cell[1].to_i > 4 || cell[0].ord < 65 || cell[0].ord > 68
     end
-
-
   end
+
+
 
 
 
