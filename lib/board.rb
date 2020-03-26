@@ -2,7 +2,7 @@ require 'pry'
 require './lib/cell'
 class Board
 
-  attr_accessor :cells
+  attr_reader :cells
 
   def initialize
     @cells = {"A1" => Cell.new("A1"),
@@ -23,10 +23,10 @@ class Board
               "D4" => Cell.new("D4")  }
   end
 
-  def cells
-     @cells
-
-  end
+  # def cells
+  #    @cells
+  #
+  # end
 
   def valid_coordinate?(cell_key)
     cells.keys.include?(cell_key)
@@ -102,26 +102,24 @@ class Board
 
   def valid_placement?(ship, coordinates)
     #binding.pry
-    condition1 = coordinates.all? do |coord|
+    in_board = coordinates.all? do |coord|
       valid_coordinate?(coord)
     end
-    condition2 = y_coordinates_sequential?(coordinates) || x_coordinates_sequential?(coordinates)
-    condition3 = coordinates.length == ship.length
-    condition4 = ships_overlap?(ship, coordinates)
-    condition1 && condition2 && condition3 && !condition4
+    sequential = y_coordinates_sequential?(coordinates) || x_coordinates_sequential?(coordinates)
+    within_ship_length = coordinates.length == ship.length
+    dont_overlap = ships_overlap?(ship, coordinates)
+    in_board && sequential && within_ship_length && !dont_overlap
   end
 
   def place(ship, coordinates)
       if valid_placement?(ship, coordinates)
-       coordinates.each do |coordinate|
-         cells[coordinate].place_ship(ship)
-       end
-     end
+        coordinates.each do |coordinate|
+          cells[coordinate].place_ship(ship)
+        end
+      end
     #  binding.pry
     #  cells[coordinates[0]].place_ship(ship)
     #  binding.pry
-
-
   end
 
   def render(optional = false)

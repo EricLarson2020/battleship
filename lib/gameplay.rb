@@ -32,7 +32,7 @@ attr_reader :board1, :cruiser
         computer_shot
       end
       index += 1
-      #index is for pry access 
+      #index is for pry access
     end
 
     if player_loss?
@@ -84,7 +84,7 @@ attr_reader :board1, :cruiser
         p "Those are invalid coordinates. Please try again:"
         input_2 = gets.chomp
         input_2 = input_2.split(" ")
-      end
+       end
     end
     @board1.place(@cruiser1, input_2)
     @board1.render(true)
@@ -99,7 +99,7 @@ attr_reader :board1, :cruiser
         p "Those are invalid coordinates. Please try again:"
         input_3 = gets.chomp
         input_3 = input_3.split(" ")
-      end
+       end
     end
     @board1.place(@submarine1, input_3)
     @board1.render(true)
@@ -142,7 +142,7 @@ attr_reader :board1, :cruiser
 
   def computer_shot
     input = @computer.smart_attack
-
+    # binding.pry
     @board1.cells[input].fire_upon
     if @board1.cells[input].fired_upon? && @board1.cells[input].ship == nil
       p "Computer's shot on #{input} was a miss."

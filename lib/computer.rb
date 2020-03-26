@@ -34,12 +34,11 @@ class Computer
     if !@attack_cell_list.empty?
       @attack_cell = @attack_cell_list.shuffle[0]
       @attack_cell_list.delete(@attack_cell)
-
+      puts "random attack"
       @attack_cell
     else
       @attack_cell = ''
     end
-    # binding.pry
   end
 
   def missed_or_sunk?(previous_cell)
@@ -54,7 +53,6 @@ class Computer
   def smart_cells(previous_cell)
     adjacent_cells(previous_cell).find_all do |cell|
       @attack_cell_list.include?(cell)
-
     end
   end
 
@@ -69,33 +67,14 @@ class Computer
     end
   end
 
-
-
   def smart_attack
     if @attack_cell == ''
       attack
     elsif missed_or_sunk?(@attack_cell)
-      puts "random attack"
       attack
     elsif hit?(@attack_cell)
-      # binding.pry
-      # smart_cell
-      # smart_cells = adjacent_cells(@attack_cell).find_all do |cell|
-      #   @attack_cell_list.include?(cell)
-      # end
-      # binding.pry
-
-      if smart_cells(@attack_cell) == []
-        attack
-      elsif smart_cells(@attack_cell) != []
-        @attack_cell = smart_cells(@attack_cell).shuffle[0]
-        @attack_cell_list.delete(@attack_cell)
-        puts "SMART ATTACK!"
-        @attack_cell
-      end
+      smart_attack_cell(@attack_cell)
     end
-    # binding.pry
-
   end
 
   def adjacent_cells(cell)
