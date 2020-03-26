@@ -32,6 +32,7 @@ attr_reader :board1, :cruiser
         computer_shot
       end
       index += 1
+      #index is for pry access 
     end
 
     if player_loss?
@@ -140,13 +141,8 @@ attr_reader :board1, :cruiser
   end
 
   def computer_shot
-    #input = @computer.attack
-    # binding.pry
     input = @computer.smart_attack
-    # binding.pry
-    # if @board1.cells[input] == nil
-    #   binding.pry
-    # end
+
     @board1.cells[input].fire_upon
     if @board1.cells[input].fired_upon? && @board1.cells[input].ship == nil
       p "Computer's shot on #{input} was a miss."
