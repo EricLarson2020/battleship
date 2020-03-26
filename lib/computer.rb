@@ -3,11 +3,9 @@ require "pry"
 class Computer
 
   attr_reader :board_computer,
-              :cell_list,
               :attack_cell,
-              :ship1,
-              :ship2,
               :attack_cell_list
+
   def initialize(board_computer, board_user = false)
     @board_computer = board_computer
     @board_user = board_user
@@ -15,8 +13,7 @@ class Computer
     @attack_cell_list = @board_computer.cells.keys
     @place_cell_list = @board_computer.cells.keys
     @attack_cell = ''
-    @ship1 = Ship.new("Cruiser", 3)
-    @ship2 = Ship.new("Submarine", 2)
+
   end
 
   def delete_cells(original, delete)
