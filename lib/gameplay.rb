@@ -2,6 +2,7 @@
 require "pry"
 
 class Gameplay
+
 attr_reader :board1, :cruiser
   def initialize(board1, board2, computer = nil)
     @board1 = board1
@@ -69,9 +70,11 @@ attr_reader :board1, :cruiser
       p "B . . . ."
       p "C . . . ."
       p "D . . . ."
+     
     end
 
   end
+
 
 
   def cruiser_assignment
@@ -100,6 +103,8 @@ attr_reader :board1, :cruiser
         input_3 = gets.chomp
         input_3 = input_3.split(" ")
       end
+
+
     end
     @board1.place(@submarine1, input_3)
     @board1.render(true)
@@ -136,8 +141,6 @@ attr_reader :board1, :cruiser
         p "You sunk computer's #{@board2.cells[input].ship.name}!"
       end
     end
-
-
   end
 
   def computer_shot
