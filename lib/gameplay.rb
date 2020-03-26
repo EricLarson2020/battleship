@@ -1,16 +1,16 @@
 require "pry"
 
 class Gameplay
-attr_reader :board1, :cruiser
-  def initialize(board1, board2, computer = nil)
-    @board1 = board1
-    @board2 = board2
+attr_reader :board_user, :board_computer, :cruiser
+  def initialize(board_user, board_computer, computer = nil)
+    @board_user = board_user
+    @board_computer = board_computer
     @computer = computer
     @cruiser1 = Ship.new("Cruiser", 3)
     @submarine1 = Ship.new("Submarine", 2)
     @cruiser2 = Ship.new("Cruiser", 3)
     @submarine2 = Ship.new("Submarine", 2)
-    @player_cell_list = board1.cells.keys
+    @player_cell_list = board_user.cells.keys
   end
 
   def start
@@ -79,84 +79,123 @@ attr_reader :board1, :cruiser
     input_2 = gets.chomp
     input_2 = input_2.split(" ")
 
-    if @board1.valid_placement?(@cruiser1, input_2) != true
-       until @board1.valid_placement?(@cruiser1, input_2)
+    if @board_user.valid_placement?(@cruiser1, input_2) != true
+       until @board_user.valid_placement?(@cruiser1, input_2)
         p "Those are invalid coordinates. Please try again:"
         input_2 = gets.chomp
         input_2 = input_2.split(" ")
        end
     end
-    @board1.place(@cruiser1, input_2)
-    @board1.render(true)
+    @board_user.place(@cruiser1, input_2)
+    @board_user.render(true)
   end
 
   def submarine_assignment
     p "Enter the squares for the Submarine (2 spaces):"
     input_3 = gets.chomp
     input_3 = input_3.split(" ")
-    if @board1.valid_placement?(@submarine1, input_3) != true
-       until @board1.valid_placement?(@submarine1, input_3)
+    if @board_user.valid_placement?(@submarine1, input_3) != true
+       until @board_user.valid_placement?(@submarine1, input_3)
         p "Those are invalid coordinates. Please try again:"
         input_3 = gets.chomp
         input_3 = input_3.split(" ")
        end
     end
-    @board1.place(@submarine1, input_3)
-    @board1.render(true)
+    @board_user.place(@submarine1, input_3)
+    @board_user.render(true)
   end
 
   def computer_placement
     #binding.pry
-    @board2.place(@cruiser2, @computer.auto_coordinates(@cruiser2))
-    @board2.place(@submarine2, @computer.auto_coordinates(@submarine2))
+    @board_computer.place(@cruiser2, @computer.auto_coordinates(@cruiser2))
+    @board_computer.place(@submarine2, @computer.auto_coordinates(@submarine2))
     puts "===========Computer Board==========="
-    @board2.render(true)
+    @board_computer.render(true)
     puts "===========PLAYER BOARD============="
-    @board1.render(true)
+    @board_user.render(true)
   end
 
-  def player_shot
+  def player_shot_input
     p "Enter the coordinate for your shot"
     input = gets.chomp
     until @player_cell_list.include?(input)
       puts "Those are invalid coordinates. Please try again"
       input = gets.chomp
     end
-    #delete player input from avaliable cell list
-    index = @player_cell_list.index(input)
-    @player_cell_list.delete_at(index)
-
-    #call result
-    @board2.cells[input].fire_upon
-    if @board2.cells[input].fired_upon? && @board2.cells[input].ship == nil
-      p "Your shot on #{input} was a miss."
-    elsif @board2.cells[input].fired_upon? && @board2.cells[input].ship != nil
-      p "Your shot on #{input} was a hit!"
-      if @board2.cells[input].ship.sunk?
-        p "You sunk computer's #{@board2.cells[input].ship.name}!"
-      end
-    end
-
-
+    input
   end
+
+  def player_fire_on(cell_input)
+    @player_cell_list.delete(cell_input)
+    @board_computer.cells[cell_input].fire_upon
+  end
+
+  def status_board_computer(cell_input)
+    # binding.pry
+    @board_computer.cells[cell_input].render
+    @board_computer.cells[cell_input].status
+  end
+
+  def player_call_result(cell_input)
+    status_board_computer(cell_input)
+    if status_board_computer(cell_input) == :missed
+      p "Your shot on #{cell_input} was a miss."
+    elsif status_board_computer(cell_input) == :hit
+      p "Your shot on #{cell_input} was a hit!"
+    elsif status_board_computer(cell_input) == :sunk
+      p "You sunk computer's #{@board_computer.cells[cell_input].ship.name}!"
+    end
+  end
+
+  def player_shot
+    cell_input = player_shot_input
+    player_fire_on(cell_input)
+    player_call_result(cell_input)
+  end
+
+
+######### ORIGINAL #############
+  # def player_shot
+  #   p "Enter the coordinate for your shot"
+  #   input = gets.chomp
+  #   until @player_cell_list.include?(input)
+  #     puts "Those are invalid coordinates. Please try again"
+  #     input = gets.chomp
+  #   end
+  #   # delete player input from avaliable cell list
+  #   index = @player_cell_list.index(input)
+  #   @player_cell_list.delete_at(index)
+  #
+  #   #call result
+  #   @board_computer.cells[input].fire_upon
+  #   if @board_computer.cells[input].fired_upon? && @board_computer.cells[input].ship == nil
+  #     p "Your shot on #{input} was a miss."
+  #   elsif @board_computer.cells[input].fired_upon? && @board_computer.cells[input].ship != nil
+  #     p "Your shot on #{input} was a hit!"
+  #     if @board_computer.cells[input].ship.sunk?
+  #       p "You sunk computer's #{@board_computer.cells[input].ship.name}!"
+  #     end
+  #   end
+
+
+  # end
 
   def computer_shot
     input = @computer.smart_attack
-    # binding.pry
-    @board1.cells[input].fire_upon
-    if @board1.cells[input].fired_upon? && @board1.cells[input].ship == nil
+    @board_user.cells[input].fire_upon
+    if @board_user.cells[input].fired_upon? && @board_user.cells[input].ship == nil
       p "Computer's shot on #{input} was a miss."
-    elsif @board1.cells[input].fired_upon? && @board1.cells[input].ship != nil
+    elsif @board_user.cells[input].fired_upon? && @board_user.cells[input].ship != nil
       p "Computer's shot on #{input} was a hit!"
-      if @board1.cells[input].ship.sunk?
+      if @board_user.cells[input].ship.sunk?
       #  binding.pry
-        p "Computer sunk your #{@board1.cells[input].ship.name}!"
+        p "Computer sunk your #{@board_user.cells[input].ship.name}!"
       end
     end
     puts "===========Computer Board==========="
-    @board2.render(true)
+    @board_computer.render(true)
     puts "===========PLAYER BOARD============="
-    @board1.render(true)
+    @board_user.render(true)
   end
 
   def player_loss?
