@@ -31,20 +31,20 @@ class Cell
 
   def render(optional = false)
     if @fire_upon == false && !optional
-      @status = "Not_hit"
+      @status = :not_hit
       "."
     elsif @fire_upon == false && optional && !empty?
       "S"
     elsif @fire_upon == false && optional && empty?
       "."
     elsif @fire_upon == true && @ship == nil
-      @status = "Missed"
+      @status = :missed
       "M"
     elsif @fire_upon == true && @ship != nil && @ship.health != 0
-      @status = "Hit"
+      @status = :hit
       "H"
     elsif @ship != nil && @ship.health == 0
-      @status = "sunk"
+      @status = :sunk
       "X"
     end
 

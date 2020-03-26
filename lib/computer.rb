@@ -28,21 +28,21 @@ class Computer
 
   def attack
     # binding.pry
+    # binding.pry
     if !@attack_cell_list.empty?
       @attack_cell = @attack_cell_list.shuffle[0]
       index = @attack_cell_list.index(attack_cell)
       @attack_cell_list.delete_at(index)
+
       @attack_cell
     else
       @attack_cell = ''
     end
+    @attack_cell
   end
-  # if status is hit
-  #   attack adjacent
-  #   if status is missed
-  #     do random
+
   def smart_attack
-  #  binding.pry
+    # binding.pry
     if @attack_cell == ''
       attack
     elsif @board2.cells[@attack_cell].status == :missed || @board2.cells[@attack_cell].status == :sunk
@@ -64,6 +64,7 @@ class Computer
         @attack_cell
       end
     end
+    # binding.pry
   end
 
   def adjacent_cells(cell)
