@@ -3,21 +3,23 @@ require "pry"
 class Computer
 
   attr_reader :board, :cell_list, :attack_cell, :ship1, :ship2
-  def initialize(board, ship1 = nil, ship2 = nil)
+  def initialize(board)
     @board = board
     @cell_list = @board.cells.keys
-    @attack_cell_list = @cell_list
-    @place_cell_list = @cell_list
+    @attack_cell_list = @board.cells.keys
+    @place_cell_list = @board.cells.keys
     @attack_cell = nil
-    @ship1 = ship1
-    @ship2 = ship2
+    @ship1 = Ship.new("Cruiser", 3)
+    @ship2 = Ship.new("Submarine", 2)
   end
 
   def attack
+    binding.pry
     if !@attack_cell_list.empty?
       @attack_cell = @attack_cell_list.shuffle[0]
       index = @attack_cell_list.index(attack_cell)
       @attack_cell_list.delete_at(index)
+      p @attack_cell_list
       @attack_cell
     else
       @attack_cell = nil
@@ -35,6 +37,11 @@ class Computer
     end
     ship_cells
   end
+
+  if status is hit
+    attack adjacent
+    if status is missed
+      do random
 
 
 end
