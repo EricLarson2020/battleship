@@ -83,9 +83,7 @@ attr_reader :board_user, :board_computer, :cruiser
 
 def player_placement_valid(ship)
   input = @player.ship_assignment
-
   if @board_user.valid_placement?(ship, input) != true
-
      until @board_user.valid_placement?(ship, input)
       p "Those are invalid coordinates. Please try again:"
       @player.ship_assignment

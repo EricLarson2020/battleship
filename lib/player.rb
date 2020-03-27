@@ -1,6 +1,9 @@
 class Player
-
-
+attr_reader :board_user, :board_computer
+def initialize (board_user, board_computer)
+@board_user = board_user
+@board_computer = board_computer
+end
 #status player method
 
 #starting_input_mehtod
@@ -18,6 +21,14 @@ class Player
 
   def player_shot_input
     player_shot = gets.chomp
+  end
+
+  def cell_status
+    cell = player.gets.chomp
+    cell.to_s
+    board_user.render
+    board_user.cells[cell].status
+
   end
 
 
