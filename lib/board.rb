@@ -92,14 +92,23 @@ class Board
     end
   end
 
-  def valid_placement?(ship, coordinates)
-    in_board = coordinates.all? do |coord|
-      valid_coordinate?(coord)
+  def sequential?(cell_list)
+    y_coordinates_sequential?(cell_list) || x_coordinates_sequential?(cell_list)
+  end
+
+  def in_board?(cell_list)
+    cell_list.all? do |cell|
+      valid_coordinate?(cell)
     end
-    sequential = y_coordinates_sequential?(coordinates) || x_coordinates_sequential?(coordinates)
-    within_ship_length = coordinates.length == ship.length
-    dont_overlap = ships_overlap?(ship, coordinates)
-    in_board && sequential && within_ship_length && !dont_overlap
+  end
+
+  def ship_length_equal_cell_length?(ship, cell_list)
+    cell_list.length == ship.length
+  end
+
+  def valid_placement?(ship, cell_list)
+    in_board?(cell_list) && sequential?(cell_list) && !ships_overlap?(ship, cell_list) && ship_length_equal_cell_length?(ship, cell_list)
+
   end
 
   def place(ship, coordinates)
@@ -108,9 +117,6 @@ class Board
           cells[coordinate].place_ship(ship)
         end
       end
-    #  binding.pry
-    #  cells[coordinates[0]].place_ship(ship)
-    #  binding.pry
   end
 
   def render(optional = false)

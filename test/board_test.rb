@@ -264,5 +264,34 @@ class BoardTest < Minitest::Test
     assert_equal expected, board.cells_with_ships
   end
 
+  def test_identifies_sequential_cell_lists
+    board = Board.new
+    cell_list1 = ["A1", "A2","A3"]
+    cell_list2 = ["A1", "B1","C1"]
+    cell_list3 = ["A3", "A2","A1"]
+    cell_list4 = ["C1", "B1","A1"]
+    cell_list5 = ["A1", "B2","C3"]
+
+    assert_equal true, board.sequential?(cell_list1)
+    assert_equal true, board.sequential?(cell_list2)
+    assert_equal true, board.sequential?(cell_list3)
+    assert_equal true, board.sequential?(cell_list4)
+    assert_equal false, board.sequential?(cell_list5)
+  end
+
+  def test_identifies_many_cells_in_board
+    board = Board.new
+    cell_list1 = ["A1", "A2","A3"]
+    cell_list2 = ["A1", "X1","C1"]
+    cell_list3 = ["A0", "A2","A1"]
+    cell_list4 = ["C1", "B1","A8"]
+
+    assert_equal true, board.sequential?(cell_list1)
+    assert_equal false, board.sequential?(cell_list2)
+    assert_equal false, board.sequential?(cell_list3)
+    assert_equal false, board.sequential?(cell_list4)
+  end
+
+
 
 end #final
