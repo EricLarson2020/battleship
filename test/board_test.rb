@@ -218,4 +218,14 @@ class BoardTest < Minitest::Test
 
   end
 
+  def test_numbers_are_same_in_array
+    board = Board.new
+    cell_list_true = ["A4", "C4", "D4"]
+    cell_list_false = ["A4", "A3", "A2"]
+
+    assert_equal true, board.numbers_same?(cell_list_true)
+    assert_equal false, board.numbers_same?(cell_list_false)
+
+  end
+
 end #final

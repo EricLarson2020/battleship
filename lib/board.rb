@@ -22,35 +22,42 @@ class Board
               "D3" => Cell.new("D3"),
               "D4" => Cell.new("D4")  }
   end
-  
+
   def valid_coordinate?(cell_key)
     cells.keys.include?(cell_key)
   end
 
   def numbers_increment?(cells)
     index = -1
-    cells.all? do |coord|
+    cells.all? do |cell|
       index += 1
-      coord[1].to_i == cells[0][1].to_i + index
+      cell[1].to_i == cells[0][1].to_i + index
     end
   end
 
   def numbers_decrement?(cells)
     index = -1
-    num_decremental = cells.all? do |coord|
+    cells.all? do |cell|
       index += 1
-      coord[1].to_i == cells[0][1].to_i - index
+      cell[1].to_i == cells[0][1].to_i - index
     end
   end
 
   def letters_same?(cells)
-    letter_equal = cells.all? do |coord|
-      coord[0] == cells[0][0]
+    cells.all? do |cell|
+      cell[0] == cells[0][0]
     end
   end
 
   def x_coordinates_sequential?(cells)
     letters_same?(cells) &&  (numbers_increment?(cells) || numbers_decrement?(cells))
+  end
+
+  def numbers_same?(cells)
+    cells.all? do |cell|
+      cell[1] == cells[0][1]
+    end
+
   end
 
   def y_coordinates_sequential?(coordinates)
