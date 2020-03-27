@@ -228,4 +228,41 @@ class BoardTest < Minitest::Test
 
   end
 
+  def test_letters_in_array_increment
+    board = Board.new
+    cell_list_true = ["A4", "B4", "C4"]
+    cell_list_false = ["A4", "A3", "B2"]
+
+    assert_equal true, board.letters_incement?(cell_list_true)
+    assert_equal false, board.letters_incement?(cell_list_false)
+  end
+
+  def test_letters_in_array_decrement
+    board = Board.new
+    cell_list_true = ["D4", "C4", "B4"]
+    cell_list_false = ["A4", "A3", "B2"]
+
+    assert_equal true, board.letters_decrement?(cell_list_true)
+    assert_equal false, board.letters_decrement?(cell_list_false)
+  end
+
+  def test_it_identifies_cells_with_ships
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    sub = Ship.new("Submarine", 2)
+    board.place(cruiser, ["A1", "A2","A3"])
+    board.place(sub, ["D4","C4"])
+
+
+    expected = {
+                "A1" => board.cells["A1"],
+                "A2" => board.cells["A2"],
+                "A3" => board.cells["A3"],
+                "D4" => board.cells["D4"],
+                "C4" => board.cells["C4"]
+                }
+    assert_equal expected, board.cells_with_ships
+  end
+
+
 end #final
