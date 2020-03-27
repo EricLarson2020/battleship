@@ -87,12 +87,8 @@ class Board
   end
 
   def ships_overlap?(ship, cell_list)
-    full_cells = @cells.select do |coord|
-      @cells[coord].ship != nil
-    end
-    full_cells.any? do |key, value|
-      full_cell_coordinate = value.coordinate
-      cell_list.include?(full_cell_coordinate)
+    cells_with_ships.any? do |key, value|
+      cell_list.include?(value.coordinate)
     end
   end
 
