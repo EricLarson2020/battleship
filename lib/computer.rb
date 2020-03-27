@@ -5,7 +5,7 @@ class Computer
   attr_reader :board_computer,
               :attack_cell,
               :attack_cell_list
-
+#two board types board object and boolean--do keep the boards the same
   def initialize(board_computer, board_user = false)
     @board_computer = board_computer
     @board_user = board_user
@@ -20,7 +20,7 @@ class Computer
       delete.include?(cell)
     end
   end
-
+#Extra first call
   def auto_coordinates(ship)
     ship_cells = []
     until board_computer.valid_placement?(ship, ship_cells) do

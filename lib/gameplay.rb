@@ -2,21 +2,23 @@ require "pry"
 
 class Gameplay
 attr_reader :board_user, :board_computer, :cruiser
-  def initialize(board_user, board_computer, computer = nil)
+#computer
+  def initialize(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
     @board_user = board_user
     @board_computer = board_computer
     @computer = computer
-    @cruiser1 = Ship.new("Cruiser", 3)
-    @submarine1 = Ship.new("Submarine", 2)
-    @cruiser2 = Ship.new("Cruiser", 3)
-    @submarine2 = Ship.new("Submarine", 2)
+    @cruiser1 = cruiser1
+    @submarine1 = submarine1
+    @cruiser2 = cruiser2
+    @submarine2 = submarine2
     @player_cell_list = board_user.cells.keys
+    @player = player
   end
 
   def start
-    @play_game = false
-    welcome
-    if @play_game == true
+
+    var = welcome
+    if var == true
       cruiser_assignment
       submarine_assignment
       computer_placement
@@ -43,24 +45,20 @@ attr_reader :board_user, :board_computer, :cruiser
 
   end
 
-  def welcome
-    input = ''
-    until input.downcase == 'p' || input.downcase == 'q'
-      p "Welcome to BATTLESHIP"
-      p "Enter p to play. Enter q to quit."
-      input = gets.chomp
-      if input.downcase == "p"
-        @play_game = true
-      elsif input.downcase == 'q'
-        @play_game = false
-        "Come back and play anytime!"
-        return
-      else
-        p "Invalid entry"
-      end
+  def player_start
+    p "Welcome to BATTLESHIP"
+    p "Enter p to play. Enter q to quit."
+    player_input = @player.player_starting_input
+    until player_input == "p" || "q"
+      p "Invalid input, please try again"
+      player_input = @player.player_starting_input
     end
+    player_input
+  end
 
-    if @play_game
+  def welcome_statement(player_input)
+
+    if player_input == "p"
       p "I have laid out my ships on the grid."
       p "You now need to lay out your two ships."
       p "The Cruiser is three units long and the Submarine is two units long."
@@ -69,21 +67,59 @@ attr_reader :board_user, :board_computer, :cruiser
       p "B . . . ."
       p "C . . . ."
       p "D . . . ."
+      continue = true
+    else
+      p "Come back and play anytime!"
+      continue = false
     end
-
+    continue
   end
 
+  def welcome
+    player_input = player_start
+    welcome_statement(player_input)
+  end
+  #
+  # def welcome
+  #   input = ''
+  #   until input.downcase == 'p' || input.downcase == 'q'
+  #     p "Welcome to BATTLESHIP"
+  #     p "Enter p to play. Enter q to quit."
+  #     input = gets.chomp
+  #     if input.downcase == "p"
+  #       @play_game = true
+  #     elsif input.downcase == 'q'
+  #       @play_game = false
+  #       "Come back and play anytime!"
+  #       return
+  #     else
+  #       p "Invalid entry"
+  #     end
+  #   end
+  #
+  #   if @play_game
+  #     p "I have laid out my ships on the grid."
+  #     p "You now need to lay out your two ships."
+  #     p "The Cruiser is three units long and the Submarine is two units long."
+  #     p "  1 2 3 4"
+  #     p "A . . . ."
+  #     p "B . . . ."
+  #     p "C . . . ."
+  #     p "D . . . ."
+  #   end
+  #
+  # end
+def play_placement_valid
+
+end
 
   def cruiser_assignment
     p "Enter the squares for the Cruiser (3 spaces):"
-    input_2 = gets.chomp
-    input_2 = input_2.split(" ")
-
+    input_2 = @player.cruiser_assignment
     if @board_user.valid_placement?(@cruiser1, input_2) != true
        until @board_user.valid_placement?(@cruiser1, input_2)
         p "Those are invalid coordinates. Please try again:"
-        input_2 = gets.chomp
-        input_2 = input_2.split(" ")
+        @player.cruiser_assignment
        end
     end
     @board_user.place(@cruiser1, input_2)
@@ -106,7 +142,7 @@ attr_reader :board_user, :board_computer, :cruiser
   end
 
   def computer_placement
-    #binding.pry
+    # binding.pry
     @board_computer.place(@cruiser2, @computer.auto_coordinates(@cruiser2))
     @board_computer.place(@submarine2, @computer.auto_coordinates(@submarine2))
     puts "===========Computer Board==========="
