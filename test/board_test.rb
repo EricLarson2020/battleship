@@ -3,6 +3,7 @@ require 'minitest/pride'
 
 require './lib/board'
 require './lib/cell'
+require './lib/ship'
 
 class BoardTest < Minitest::Test
 
@@ -187,6 +188,34 @@ class BoardTest < Minitest::Test
                "D . . H . \n"
     assert_equal expected, board.render(true)
     assert_equal true, board.cells["A1"].ship.sunk?
+  end
+
+  def test_numbers_increment_in_array
+    board = Board.new
+    cell_list_true = ["A1", "A2", "A3"]
+    cell_list_false = ["A1", "A2", "A4"]
+
+    assert_equal true, board.numbers_increment?(cell_list_true)
+    assert_equal false, board.numbers_increment?(cell_list_false)
+  end
+
+  def test_numbers_decrement_in_array
+    board = Board.new
+    cell_list_true = ["D4", "A3", "C2"]
+    cell_list_false = ["A4", "A2", "A1"]
+
+    assert_equal true, board.numbers_decrement?(cell_list_true)
+    assert_equal false, board.numbers_decrement?(cell_list_false)
+  end
+
+  def test_letters_same_in_all_array_elements
+    board = Board.new
+    cell_list_true = ["A4", "A3", "A2"]
+    cell_list_false = ["A4", "B3", "A2"]
+
+    assert_equal true, board.letters_same?(cell_list_true)
+    assert_equal false, board.letters_same?(cell_list_false)
+
   end
 
 end #final
