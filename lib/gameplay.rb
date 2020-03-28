@@ -87,7 +87,7 @@ def player_placement_valid(ship)
      until @board_user.valid_placement?(ship, input)
       p "Those are invalid coordinates. Please try again:"
     input = @player.ship_assignment
-    
+
      end
   end
     @board_user.place(ship, input)
@@ -144,7 +144,7 @@ def player_cell_status(input)
     end
     until @player_cell_list.include?(input)
       puts "Those are invalid coordinates. Please try again"
-      input = gets.chomp
+      input = @player.get_player_input
     end
     input
   end
@@ -179,6 +179,7 @@ def player_cell_status(input)
 
   def computer_shot
     input = @computer.smart_attack
+binding.pry
     @board_user.cells[input].fire_upon
     if @board_user.cells[input].fired_upon? && @board_user.cells[input].ship == nil
       p "Computer's shot on #{input} was a miss."

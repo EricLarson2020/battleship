@@ -31,11 +31,13 @@ class Computer
   end
 
   def attack
+
     if !@attack_cell_list.empty?
       @attack_cell = @attack_cell_list.shuffle[0]
       @attack_cell_list.delete(@attack_cell)
       puts "random attack"
       @attack_cell
+      binding.pry
     else
       @attack_cell = ''
     end
@@ -68,11 +70,15 @@ class Computer
   end
 
   def smart_attack
+
     if @attack_cell == ''
       attack
+
     elsif missed_or_sunk?(@attack_cell)
+
       attack
     elsif hit?(@attack_cell)
+
       smart_attack_cell(@attack_cell)
     end
   end
