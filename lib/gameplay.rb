@@ -179,7 +179,7 @@ def player_cell_status(input)
 
   def computer_shot
     input = @computer.smart_attack
-binding.pry
+ # binding.pry
     @board_user.cells[input].fire_upon
     if @board_user.cells[input].fired_upon? && @board_user.cells[input].ship == nil
       p "Computer's shot on #{input} was a miss."

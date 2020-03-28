@@ -37,7 +37,7 @@ class Computer
       @attack_cell_list.delete(@attack_cell)
       puts "random attack"
       @attack_cell
-      binding.pry
+      # binding.pry
     else
       @attack_cell = ''
     end
