@@ -86,7 +86,8 @@ def player_placement_valid(ship)
   if @board_user.valid_placement?(ship, input) != true
      until @board_user.valid_placement?(ship, input)
       p "Those are invalid coordinates. Please try again:"
-      @player.ship_assignment
+    input = @player.ship_assignment
+    
      end
   end
     @board_user.place(ship, input)
@@ -118,9 +119,29 @@ end
     @board_user.render(true)
   end
 
+def player_cell_status(input)
+  if input == "status"
+    p "Enter exit to return to shot input"
+    player_input = ""
+
+      until player_input == "exit"
+      p "Please enter a coordinate to check status, or exit to return."
+
+      p player_input = @player.cell_status
+
+    end
+  end
+
+  end
+
   def player_shot_input
-    p "Enter the coordinate for your shot"
-    input = @player.player_shot_input
+    p "Enter the coordinate for your shot, or type status to check cell status"
+    input = @player.get_player_input
+    player_cell_status(input)
+    if input == "status"
+      p "Enter the coordinates for your shot!"
+      input = @player.get_player_input
+    end
     until @player_cell_list.include?(input)
       puts "Those are invalid coordinates. Please try again"
       input = gets.chomp

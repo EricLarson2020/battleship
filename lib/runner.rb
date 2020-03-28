@@ -14,6 +14,6 @@ board_computer = Board.new
 computer = Computer.new(board_user, board_computer)
 player = Player.new(board_user, board_computer)
 game = Gameplay.new(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
-player.cell_status
+
 
 game.start

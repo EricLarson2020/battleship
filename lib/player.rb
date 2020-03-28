@@ -19,16 +19,22 @@ end
     modified_cruiser_assignment
   end
 
-  def player_shot_input
+  def get_player_input
     player_shot = gets.chomp
   end
 
+
+
   def cell_status
-    cell = player.gets.chomp
+    cell = gets.chomp
     cell.to_s
     board_user.render
-    board_user.cells[cell].status
-
+      if cell != "exit"
+        board_user.cells[cell].status
+    
+    else
+     p "exit"
+   end
   end
 
 
