@@ -72,7 +72,7 @@ class GameplayTest < Minitest::Test
   end
 
   def test_for_the_play_loop
-    skip
+skip
     cruiser1 = Ship.new("Cruiser", 3)
     submarine1 = Ship.new("Submarine", 2)
     cruiser2 = Ship.new("Cruiser", 3)
@@ -88,12 +88,33 @@ class GameplayTest < Minitest::Test
     game.submarine_assignment
     computer_placement
     assert_equal win, game.play_loop
-
-
   end
 
-  def test_player_start
-    skip
+  
+
+
+def test_computer_loss?
+  cruiser1 = Ship.new("Cruiser", 3)
+  submarine1 = Ship.new("Submarine", 2)
+  cruiser2 = Ship.new("Cruiser", 3)
+  submarine2 = Ship.new("Submarine", 2)
+  board_user = Board.new
+  board_computer = Board.new
+  computer = Computer.new(board_user, board_computer)
+  player = Player.new(board_user, board_computer)
+  game = Gameplay.new(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
+  cruiser2.hit
+  cruiser2.hit
+  cruiser2.hit
+  assert_equal true, cruiser2.sunk?
+  submarine2.hit
+  assert_equal false, game.computer_loss?
+  submarine2.hit
+  assert_equal true, submarine2.sunk?
+  assert_equal true, game.computer_loss?
+  end
+
+  def test_player_loss?
     cruiser1 = Ship.new("Cruiser", 3)
     submarine1 = Ship.new("Submarine", 2)
     cruiser2 = Ship.new("Cruiser", 3)
@@ -103,12 +124,19 @@ class GameplayTest < Minitest::Test
     computer = Computer.new(board_user, board_computer)
     player = Player.new(board_user, board_computer)
     game = Gameplay.new(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
-
-
+    cruiser1.hit
+    cruiser1.hit
+    assert_equal false, game.player_loss?
+    cruiser1.hit
+    assert_equal true, cruiser1.sunk?
+    submarine1.hit
+    assert_equal false, submarine1.sunk?
+    submarine1.hit
+    assert_equal true, submarine1.sunk?
+    assert_equal true, game.player_loss?
   end
 
-  def test_welcome_statement
-    skip
+  def test_game_over?
     cruiser1 = Ship.new("Cruiser", 3)
     submarine1 = Ship.new("Submarine", 2)
     cruiser2 = Ship.new("Cruiser", 3)
@@ -118,46 +146,16 @@ class GameplayTest < Minitest::Test
     computer = Computer.new(board_user, board_computer)
     player = Player.new(board_user, board_computer)
     game = Gameplay.new(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
-
-
-  end
-
-  def test_player_placement_valid
-    skip
-    cruiser1 = Ship.new("Cruiser", 3)
-    submarine1 = Ship.new("Submarine", 2)
-    cruiser2 = Ship.new("Cruiser", 3)
-    submarine2 = Ship.new("Submarine", 2)
-    board_user = Board.new
-    board_computer = Board.new
-    computer = Computer.new(board_user, board_computer)
-    player = Player.new(board_user, board_computer)
-    game = Gameplay.new(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
-  end
-
-  def test_cruiser_assignment
-    skip
-    cruiser1 = Ship.new("Cruiser", 3)
-    submarine1 = Ship.new("Submarine", 2)
-    cruiser2 = Ship.new("Cruiser", 3)
-    submarine2 = Ship.new("Submarine", 2)
-    board_user = Board.new
-    board_computer = Board.new
-    computer = Computer.new(board_user, board_computer)
-    player = Player.new(board_user, board_computer)
-    game = Gameplay.new(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
-  end
-
-  def test_submarine_assignment
-    skip
-    cruiser1 = Ship.new("Cruiser", 3)
-    submarine1 = Ship.new("Submarine", 2)
-    cruiser2 = Ship.new("Cruiser", 3)
-    submarine2 = Ship.new("Submarine", 2)
-    board_user = Board.new
-    board_computer = Board.new
-    computer = Computer.new(board_user, board_computer)
-    player = Player.new(board_user, board_computer)
-    game = Gameplay.new(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
+    cruiser1.hit
+    cruiser1.hit
+    assert_equal false, game.game_over?
+    cruiser1.hit
+    submarine2.hit
+    submarine2.hit
+    assert_equal true, submarine2.sunk?
+    submarine1.hit
+    submarine1.hit
+    assert_equal true, game.player_loss?
+    assert_equal true, game.game_over?
   end
 end

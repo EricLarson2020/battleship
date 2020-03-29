@@ -1,7 +1,7 @@
 require "pry"
 
 class Gameplay
-attr_reader :board_user, :board_computer, :cruiser
+attr_reader :board_user, :board_computer, :cruiser, :computer
 #computer
   def initialize(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
     @board_user = board_user

@@ -14,7 +14,11 @@ class PlayerTest < Minitest::Test
     assert_instance_of Player, player
   end
 
-  
+  def test_cell_status
+    player = Player.new
+    board_user = Board.new
+    board_computer = Board.new
+
 
 
 
