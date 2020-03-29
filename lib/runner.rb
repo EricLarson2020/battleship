@@ -18,3 +18,5 @@ game = Gameplay.new(board_user, board_computer, computer, player, cruiser1, crui
 # player.cell_status
 
 game.start
+
+#this is a test
