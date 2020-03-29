@@ -3,21 +3,8 @@ require './lib/cell'
 class Board
 
   attr_reader :cells
-# row0 = []
-# 7.times do row << Cell.new
-# Board.new()
-#
-#   def initialize(row0)
-#     #array index
-#     #hash no-index
-#     # [{"A1"=>"Cell.new(A1)", }]
-#     board = [
-#       row0,
-#       [Cell, Cell,Cell,Cell],
-#       [Cell, Cell,Cell,Cell],
-#       [Cell, Cell,Cell,Cell],
-#     ]
-def initialize
+
+  def initialize
     @cells = {"A1" => Cell.new("A1"),
               "A2" => Cell.new("A2"),
               "A3" => Cell.new("A3"),
@@ -35,90 +22,93 @@ def initialize
               "D3" => Cell.new("D3"),
               "D4" => Cell.new("D4")  }
   end
-  
+
   def valid_coordinate?(cell_key)
-    cells.keys.include?(cell_key)
+    @cells.keys.include?(cell_key)
   end
 
-  def numbers_increment?(cells)
+  def numbers_increment?(cell_list)
     index = -1
-    cells.all? do |coord|
+    cell_list.all? do |cell|
       index += 1
-      coord[1].to_i == cells[0][1].to_i + index
+      cell[1].to_i == cell_list[0][1].to_i + index
     end
   end
 
-  def numbers_decrement?(cells)
+  def numbers_decrement?(cell_list)
     index = -1
-    num_decremental = cells.all? do |coord|
+    cell_list.all? do |cell|
       index += 1
-      coord[1].to_i == cells[0][1].to_i - index
+      cell[1].to_i == cell_list[0][1].to_i - index
     end
   end
 
-  def letters_same?(cells)
-    letter_equal = cells.all? do |coord|
-      coord[0] == cells[0][0]
+  def letters_same?(cell_list)
+    cell_list.all? do |cell|
+      cell[0] == cell_list[0][0]
     end
   end
 
-  def x_coordinates_sequential?(cells)
-    letters_same?(cells) &&  (numbers_increment?(cells) || numbers_decrement?(cells))
+  def x_coordinates_sequential?(cell_list)
+    letters_same?(cell_list) &&  (numbers_increment?(cell_list) || numbers_decrement?(cell_list))
   end
 
-  def y_coordinates_sequential?(coordinates)
-    #the second element of the string coord "1" must be constant
-    y_condition1 = coordinates.all? do |coord|
-      coord[1] == coordinates[0][1]
+  def numbers_same?(cell_list)
+    cell_list.all? do |cell|
+      cell[1] == cell_list[0][1]
     end
-    #the first element of the string coord "A" must be incrementing
+  end
+
+  def letters_incement?(cell_list)
     index = -1
-    y_condition2 = coordinates.all? do |coord|
+     cell_list.all? do |cell|
       index += 1
-      coord[0].ord == coordinates[0][0].ord + index
+      cell[0].ord == cell_list[0][0].ord + index
     end
-    #decending
+  end
+
+  def letters_decrement?(cell_list)
     index = -1
-    y_condition3 = coordinates.all? do |coord|
+    cell_list.all? do |cell|
       index += 1
-      coord[0].ord == coordinates[0][0].ord - index
+      cell[0].ord == cell_list[0][0].ord - index
     end
-
-    y_condition1 && (y_condition2 || y_condition3)
-  end
-
-  def ships_overlap?(ship, coordinates)
-
-    full_cells = cells.select do |coord|
-      cells[coord].ship != nil
-    end
-
-    full_cells.any? do |key, value|
-    full_cell_coordinate = value.coordinate
-
-    coordinates.include?(full_cell_coordinate)
-
   end
 
 
-
-
-    # select do |coord|
-    # #   cells.coord != nil
-    # #   # require "pry";binding.pry
-    # # end
-
+  def y_coordinates_sequential?(cell_list)
+    numbers_same?(cell_list) && (letters_incement?(cell_list) || letters_decrement?(cell_list))
   end
 
-  def valid_placement?(ship, coordinates)
-    #binding.pry
-    in_board = coordinates.all? do |coord|
-      valid_coordinate?(coord)
+  def cells_with_ships
+    @cells.select do |coord|
+      @cells[coord].ship != nil
     end
-    sequential = y_coordinates_sequential?(coordinates) || x_coordinates_sequential?(coordinates)
-    within_ship_length = coordinates.length == ship.length
-    dont_overlap = ships_overlap?(ship, coordinates)
-    in_board && sequential && within_ship_length && !dont_overlap
+  end
+
+  def ships_overlap?(ship, cell_list)
+    cells_with_ships.any? do |key, value|
+      cell_list.include?(value.coordinate)
+    end
+  end
+
+  def sequential?(cell_list)
+    y_coordinates_sequential?(cell_list) || x_coordinates_sequential?(cell_list)
+  end
+
+  def in_board?(cell_list)
+    cell_list.all? do |cell|
+      valid_coordinate?(cell)
+    end
+  end
+
+  def ship_length_equal_cell_length?(ship, cell_list)
+    cell_list.length == ship.length
+  end
+
+  def valid_placement?(ship, cell_list)
+    in_board?(cell_list) && sequential?(cell_list) && !ships_overlap?(ship, cell_list) && ship_length_equal_cell_length?(ship, cell_list)
+
   end
 
   def place(ship, coordinates)
@@ -127,9 +117,6 @@ def initialize
           cells[coordinate].place_ship(ship)
         end
       end
-    #  binding.pry
-    #  cells[coordinates[0]].place_ship(ship)
-    #  binding.pry
   end
 
   def render(optional = false)

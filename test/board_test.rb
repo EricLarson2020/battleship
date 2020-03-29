@@ -218,4 +218,80 @@ class BoardTest < Minitest::Test
 
   end
 
+  def test_numbers_are_same_in_array
+    board = Board.new
+    cell_list_true = ["A4", "C4", "D4"]
+    cell_list_false = ["A4", "A3", "A2"]
+
+    assert_equal true, board.numbers_same?(cell_list_true)
+    assert_equal false, board.numbers_same?(cell_list_false)
+
+  end
+
+  def test_letters_in_array_increment
+    board = Board.new
+    cell_list_true = ["A4", "B4", "C4"]
+    cell_list_false = ["A4", "A3", "B2"]
+
+    assert_equal true, board.letters_incement?(cell_list_true)
+    assert_equal false, board.letters_incement?(cell_list_false)
+  end
+
+  def test_letters_in_array_decrement
+    board = Board.new
+    cell_list_true = ["D4", "C4", "B4"]
+    cell_list_false = ["A4", "A3", "B2"]
+
+    assert_equal true, board.letters_decrement?(cell_list_true)
+    assert_equal false, board.letters_decrement?(cell_list_false)
+  end
+
+  def test_it_identifies_cells_with_ships
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    sub = Ship.new("Submarine", 2)
+    board.place(cruiser, ["A1", "A2","A3"])
+    board.place(sub, ["D4","C4"])
+
+
+    expected = {
+                "A1" => board.cells["A1"],
+                "A2" => board.cells["A2"],
+                "A3" => board.cells["A3"],
+                "D4" => board.cells["D4"],
+                "C4" => board.cells["C4"]
+                }
+    assert_equal expected, board.cells_with_ships
+  end
+
+  def test_identifies_sequential_cell_lists
+    board = Board.new
+    cell_list1 = ["A1", "A2","A3"]
+    cell_list2 = ["A1", "B1","C1"]
+    cell_list3 = ["A3", "A2","A1"]
+    cell_list4 = ["C1", "B1","A1"]
+    cell_list5 = ["A1", "B2","C3"]
+
+    assert_equal true, board.sequential?(cell_list1)
+    assert_equal true, board.sequential?(cell_list2)
+    assert_equal true, board.sequential?(cell_list3)
+    assert_equal true, board.sequential?(cell_list4)
+    assert_equal false, board.sequential?(cell_list5)
+  end
+
+  def test_identifies_many_cells_in_board
+    board = Board.new
+    cell_list1 = ["A1", "A2","A3"]
+    cell_list2 = ["A1", "X1","C1"]
+    cell_list3 = ["A0", "A2","A1"]
+    cell_list4 = ["C1", "B1","A8"]
+
+    assert_equal true, board.sequential?(cell_list1)
+    assert_equal false, board.sequential?(cell_list2)
+    assert_equal false, board.sequential?(cell_list3)
+    assert_equal false, board.sequential?(cell_list4)
+  end
+
+
+
 end #final

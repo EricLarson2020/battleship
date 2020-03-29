@@ -6,7 +6,7 @@ class Computer
               :attack_cell,
               :attack_cell_list
 #two board types board object and boolean--do keep the boards the same
-  def initialize(board_user = false, board_computer)
+  def initialize(board_user, board_computer)
     @board_computer = board_computer
     @board_user = board_user
     @attack_cell_list = @board_computer.cells.keys
