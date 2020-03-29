@@ -2,21 +2,23 @@ require "pry"
 
 class Gameplay
 attr_reader :board_user, :board_computer, :cruiser
-  def initialize(board_user, board_computer, computer = nil)
+#computer
+  def initialize(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
     @board_user = board_user
     @board_computer = board_computer
     @computer = computer
-    @cruiser1 = Ship.new("Cruiser", 3)
-    @submarine1 = Ship.new("Submarine", 2)
-    @cruiser2 = Ship.new("Cruiser", 3)
-    @submarine2 = Ship.new("Submarine", 2)
+    @cruiser1 = cruiser1
+    @submarine1 = submarine1
+    @cruiser2 = cruiser2
+    @submarine2 = submarine2
     @player_cell_list = board_user.cells.keys
+    @player = player
   end
 
   def start
-    @play_game = false
-    welcome
-    if @play_game == true
+
+    var = welcome
+    if var == true
       cruiser_assignment
       submarine_assignment
       computer_placement
@@ -43,24 +45,20 @@ attr_reader :board_user, :board_computer, :cruiser
 
   end
 
-  def welcome
-    input = ''
-    until input.downcase == 'p' || input.downcase == 'q'
-      p "Welcome to BATTLESHIP"
-      p "Enter p to play. Enter q to quit."
-      input = gets.chomp
-      if input.downcase == "p"
-        @play_game = true
-      elsif input.downcase == 'q'
-        @play_game = false
-        "Come back and play anytime!"
-        return
-      else
-        p "Invalid entry"
-      end
+  def player_start
+    p "Welcome to BATTLESHIP"
+    p "Enter p to play. Enter q to quit."
+    player_input = @player.player_starting_input.downcase
+    until player_input == "p" || player_input == "q"
+      p "Invalid input, please try again"
+      player_input = @player.player_starting_input
     end
+    player_input
+  end
 
-    if @play_game
+  def welcome_statement(player_input)
+
+    if player_input == "p"
       p "I have laid out my ships on the grid."
       p "You now need to lay out your two ships."
       p "The Cruiser is three units long and the Submarine is two units long."
@@ -69,44 +67,49 @@ attr_reader :board_user, :board_computer, :cruiser
       p "B . . . ."
       p "C . . . ."
       p "D . . . ."
+      continue = true
+    else
+      p "Come back and play anytime!"
+      continue = false
     end
-
+    continue
   end
+
+  def welcome
+    player_input = player_start
+    welcome_statement(player_input)
+  end
+
+
+def player_placement_valid(ship)
+  input = @player.ship_assignment
+  if @board_user.valid_placement?(ship, input) != true
+     until @board_user.valid_placement?(ship, input)
+      p "Those are invalid coordinates. Please try again:"
+      input = @player.ship_assignment
+     end
+  end
+    @board_user.place(ship, input)
+end
 
 
   def cruiser_assignment
     p "Enter the squares for the Cruiser (3 spaces):"
-    input_2 = gets.chomp
-    input_2 = input_2.split(" ")
-
-    if @board_user.valid_placement?(@cruiser1, input_2) != true
-       until @board_user.valid_placement?(@cruiser1, input_2)
-        p "Those are invalid coordinates. Please try again:"
-        input_2 = gets.chomp
-        input_2 = input_2.split(" ")
-       end
-    end
-    @board_user.place(@cruiser1, input_2)
+    ship = @cruiser1
+    player_placement_valid(ship)
     @board_user.render(true)
   end
 
   def submarine_assignment
     p "Enter the squares for the Submarine (2 spaces):"
-    input_3 = gets.chomp
-    input_3 = input_3.split(" ")
-    if @board_user.valid_placement?(@submarine1, input_3) != true
-       until @board_user.valid_placement?(@submarine1, input_3)
-        p "Those are invalid coordinates. Please try again:"
-        input_3 = gets.chomp
-        input_3 = input_3.split(" ")
-       end
-    end
-    @board_user.place(@submarine1, input_3)
+    ship = @submarine1
+    player_placement_valid(ship)
     @board_user.render(true)
   end
 
+
   def computer_placement
-    #binding.pry
+    # binding.pry
     @board_computer.place(@cruiser2, @computer.auto_coordinates(@cruiser2))
     @board_computer.place(@submarine2, @computer.auto_coordinates(@submarine2))
     puts "===========Computer Board==========="
@@ -117,7 +120,7 @@ attr_reader :board_user, :board_computer, :cruiser
 
   def player_shot_input
     p "Enter the coordinate for your shot"
-    input = gets.chomp
+    input = @player.player_shot_input
     until @player_cell_list.include?(input)
       puts "Those are invalid coordinates. Please try again"
       input = gets.chomp
@@ -131,7 +134,6 @@ attr_reader :board_user, :board_computer, :cruiser
   end
 
   def status_board_computer(cell_input)
-    # binding.pry
     @board_computer.cells[cell_input].render
     @board_computer.cells[cell_input].status
   end
@@ -153,35 +155,9 @@ attr_reader :board_user, :board_computer, :cruiser
     player_call_result(cell_input)
   end
 
-
-######### ORIGINAL #############
-  # def player_shot
-  #   p "Enter the coordinate for your shot"
-  #   input = gets.chomp
-  #   until @player_cell_list.include?(input)
-  #     puts "Those are invalid coordinates. Please try again"
-  #     input = gets.chomp
-  #   end
-  #   # delete player input from avaliable cell list
-  #   index = @player_cell_list.index(input)
-  #   @player_cell_list.delete_at(index)
-  #
-  #   #call result
-  #   @board_computer.cells[input].fire_upon
-  #   if @board_computer.cells[input].fired_upon? && @board_computer.cells[input].ship == nil
-  #     p "Your shot on #{input} was a miss."
-  #   elsif @board_computer.cells[input].fired_upon? && @board_computer.cells[input].ship != nil
-  #     p "Your shot on #{input} was a hit!"
-  #     if @board_computer.cells[input].ship.sunk?
-  #       p "You sunk computer's #{@board_computer.cells[input].ship.name}!"
-  #     end
-  #   end
-
-
-  # end
-
   def computer_shot
     input = @computer.smart_attack
+    # binding.pry
     @board_user.cells[input].fire_upon
     if @board_user.cells[input].fired_upon? && @board_user.cells[input].ship == nil
       p "Computer's shot on #{input} was a miss."
