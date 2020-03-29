@@ -3,8 +3,21 @@ require './lib/cell'
 class Board
 
   attr_reader :cells
-
-  def initialize
+# row0 = []
+# 7.times do row << Cell.new
+# Board.new()
+#
+#   def initialize(row0)
+#     #array index
+#     #hash no-index
+#     # [{"A1"=>"Cell.new(A1)", }]
+#     board = [
+#       row0,
+#       [Cell, Cell,Cell,Cell],
+#       [Cell, Cell,Cell,Cell],
+#       [Cell, Cell,Cell,Cell],
+#     ]
+def initialize
     @cells = {"A1" => Cell.new("A1"),
               "A2" => Cell.new("A2"),
               "A3" => Cell.new("A3"),

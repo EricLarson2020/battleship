@@ -5,8 +5,8 @@ class Computer
   attr_reader :board_computer,
               :attack_cell,
               :attack_cell_list
-
-  def initialize(board_computer, board_user = false)
+#two board types board object and boolean--do keep the boards the same
+  def initialize(board_user = false, board_computer)
     @board_computer = board_computer
     @board_user = board_user
     @attack_cell_list = @board_computer.cells.keys
@@ -20,7 +20,7 @@ class Computer
       delete.include?(cell)
     end
   end
-
+#Extra first call
   def auto_coordinates(ship)
     ship_cells = []
     until board_computer.valid_placement?(ship, ship_cells) do
@@ -31,11 +31,13 @@ class Computer
   end
 
   def attack
+
     if !@attack_cell_list.empty?
       @attack_cell = @attack_cell_list.shuffle[0]
       @attack_cell_list.delete(@attack_cell)
       puts "random attack"
       @attack_cell
+      # binding.pry
     else
       @attack_cell = ''
     end
@@ -68,11 +70,15 @@ class Computer
   end
 
   def smart_attack
+
     if @attack_cell == ''
       attack
+
     elsif missed_or_sunk?(@attack_cell)
+
       attack
     elsif hit?(@attack_cell)
+
       smart_attack_cell(@attack_cell)
     end
   end
