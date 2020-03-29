@@ -9,7 +9,7 @@ class Player
 #starting_input_mehtod
   def player_starting_input
     starting_player_input = gets.chomp
-    starting_player_input.downcase
+    starting_player_input = starting_player_input.downcase
     starting_player_input
   end
 

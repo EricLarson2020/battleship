@@ -8,26 +8,28 @@ require './lib/ship'
 class ComputerTest < Minitest::Test
 
   def test_it_exists
-    board = Board.new
-    computer = Computer.new(board)
+    board_user = Board.new
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
 
     assert_instance_of Computer, computer
   end
 
   def test_it_picks_new_cells
-    board = Board.new
-    computer = Computer.new(board)
+    board_user = Board.new
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
     computer.attack
 
-    assert_equal true, board.valid_coordinate?(computer.attack_cell)
+    assert_equal true, board_computer.valid_coordinate?(computer.attack_cell)
   end
 
   def test_it_cant_pick_if_cell_list_is_empty
-
-    board = Board.new
-    computer = Computer.new(board)
+    board_user = Board.new
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
     computer.attack # 1
-    assert_equal true, board.valid_coordinate?(computer.attack_cell)
+    assert_equal true, board_computer.valid_coordinate?(computer.attack_cell)
     computer.attack # 2
     computer.attack # 3
     computer.attack # 4
@@ -42,7 +44,7 @@ class ComputerTest < Minitest::Test
     computer.attack # 13
     computer.attack # 14
     computer.attack # 15
-    assert_equal true, board.valid_coordinate?(computer.attack_cell)
+    assert_equal true, board_computer.valid_coordinate?(computer.attack_cell)
     computer.attack # 16
     computer.attack # 17
     #binding.pry
@@ -52,29 +54,31 @@ class ComputerTest < Minitest::Test
 
   def test_it_can_place_valid_ships
 
-    board = Board.new
+    board_user = Board.new
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
     cruiser = Ship.new("Cruiser", 3)
     submarine = Ship.new("Sumbarine", 2)
-    computer = Computer.new(board)
+
     cruiser_auto_place = computer.auto_coordinates(cruiser)
     submarine_auto_place = computer.auto_coordinates(submarine)
 
-    assert_equal true, board.valid_placement?(cruiser, cruiser_auto_place)
-    assert_equal true, board.valid_placement?(submarine, submarine_auto_place)
+    assert_equal true, board_computer.valid_placement?(cruiser, cruiser_auto_place)
+    assert_equal true, board_computer.valid_placement?(submarine, submarine_auto_place)
 
-    board.place(cruiser, cruiser_auto_place)
-    board.place(submarine, submarine_auto_place)
-    puts board.render(true)
+    board_computer.place(cruiser, cruiser_auto_place)
+    board_computer.place(submarine, submarine_auto_place)
+    puts board_computer.render(true)
     # binding.pry
 
   end
 
   def test_it_can_identify_adjacent_cells
-    board_computer = Board.new
     board_user = Board.new
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
     cruiser = Ship.new("Cruiser", 3)
     submarine = Ship.new("Sumbarine", 2)
-    computer = Computer.new(board_computer, board_user)
 
     computer.adjacent_cells("A1")
 
@@ -83,9 +87,9 @@ class ComputerTest < Minitest::Test
   end
 
   def test_it_can_delete_cells
-    board_computer = Board.new
     board_user = Board.new
-    computer = Computer.new(board_computer, board_user)
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
     original_cells = ["A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4"]
     delete_cells = ["A1", "A2", "A3", "A4"]
     expected_list = ["B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4"]
@@ -95,9 +99,9 @@ class ComputerTest < Minitest::Test
   end
 
   def test_it_only_attacks_remaining_cells
-    board_computer = Board.new
     board_user = Board.new
-    computer = Computer.new(board_computer, board_user)
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
     # binding.pry
     expected_list = ["A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4"]
     assert_equal true, expected_list.include?(computer.attack)
@@ -137,9 +141,9 @@ class ComputerTest < Minitest::Test
   end
 
   def test_cell_missed_or_sunk
-    board_computer = Board.new
     board_user = Board.new
-    computer = Computer.new(board_computer, board_user)
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
     cruiser = Ship.new("Cruiser", 3)
     board_user.place(cruiser, ["A1", "A2", "A3"])
     board_user.cells["A1"].fire_upon
@@ -161,9 +165,9 @@ class ComputerTest < Minitest::Test
   end
 
   def test_cell_hit?
-    board_computer = Board.new
     board_user = Board.new
-    computer = Computer.new(board_computer, board_user)
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
     cruiser = Ship.new("Cruiser", 3)
     board_user.place(cruiser, ["A1", "A2", "A3"])
     board_user.cells["A1"].fire_upon
@@ -183,9 +187,9 @@ class ComputerTest < Minitest::Test
   end
 
   def test_smart_cell_is_adjacent_and_not_hit
-    board_computer = Board.new
     board_user = Board.new
-    computer = Computer.new(board_computer, board_user)
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
     cruiser = Ship.new("Cruiser", 3)
     board_user.place(cruiser, ["A1", "A2", "A3"])
     board_user.cells["A1"].fire_upon
@@ -195,9 +199,9 @@ class ComputerTest < Minitest::Test
   end
 
   def test_smart_cells_pick_adjacent_and_not_hit
-    board_computer = Board.new
     board_user = Board.new
-    computer = Computer.new(board_computer, board_user)
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
     cruiser = Ship.new("Cruiser", 3)
     board_user.place(cruiser, ["A1", "A2", "A3"])
     expected_list = ["A2", "A4", "B3"]
@@ -230,9 +234,9 @@ class ComputerTest < Minitest::Test
   end
 
   def test_smart_attack_cell_picks_from_smart_cell_list_3_avail
-    board_computer = Board.new
     board_user = Board.new
-    computer = Computer.new(board_computer, board_user)
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
     cruiser = Ship.new("Cruiser", 3)
     board_user.place(cruiser, ["A1", "A2", "A3"])
     board_user.cells["A3"].fire_upon
@@ -250,9 +254,9 @@ class ComputerTest < Minitest::Test
   end
 
   def test_smart_attack_cell_picks_from_smart_cell_list_2_avail
-    board_computer = Board.new
     board_user = Board.new
-    computer = Computer.new(board_computer, board_user)
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
     cruiser = Ship.new("Cruiser", 3)
     board_user.place(cruiser, ["A1", "A2", "A3"])
     board_user.cells["A3"].fire_upon
