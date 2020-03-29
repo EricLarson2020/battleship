@@ -1,9 +1,9 @@
 class Player
-attr_reader :board_user, :board_computer
-def initialize (board_user, board_computer)
-@board_user = board_user
-@board_computer = board_computer
-end
+  attr_reader :board_user, :board_computer
+  def initialize (board_user, board_computer)
+    @board_user = board_user
+    @board_computer = board_computer
+  end
 #status player method
 
 #starting_input_mehtod
@@ -23,24 +23,40 @@ end
     player_shot = gets.chomp
   end
 
-
-
-  def cell_status
+  def get_cell
     cell = gets.chomp
     cell.to_s
+  end
+
+  def cell_status(cell)
     board_user.render
       if cell != "exit"
+        # require"pry";binding.pry
         board_user.cells[cell].status
-    
     else
      p "exit"
    end
   end
 
+  def give_cell_status
+    cell = get_cell
+    cell_status(cell)
+  end
+
 
 
 
   end
+
+
+#   def cell_status
+#   cell = player.gets.chomp
+#   cell.to_s
+#   board_user.render
+#   board_user.cells[cell].status
+#
+# end
+
 #method for ship assignment
 
 #method for player firing

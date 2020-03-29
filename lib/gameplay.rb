@@ -127,7 +127,7 @@ def player_cell_status(input)
       until player_input == "exit"
       p "Please enter a coordinate to check status, or exit to return."
 
-      p player_input = @player.cell_status
+      p player_input = @player.give_cell_status
 
     end
   end
