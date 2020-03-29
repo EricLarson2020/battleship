@@ -123,7 +123,6 @@ def player_cell_status(input)
   if input == "status"
     p "Enter exit to return to shot input"
     player_input = ""
-
       until player_input == "exit"
       p "Please enter a coordinate to check status, or exit to return."
 
