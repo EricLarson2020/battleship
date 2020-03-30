@@ -126,26 +126,9 @@ def player_cell_status(input)
       until player_input == "exit"
       p "Please enter a coordinate to check status, or exit to return."
       p player_input = @player.give_cell_status
-
+      end
     end
   end
-
-  end
-
-  # def player_shot_input
-  #   p "Enter the coordinate for your shot, or type status to check cell status"
-  #   input = @player.get_player_input
-  #   player_cell_status(input)
-  #   if input == "status"
-  #     p "Enter the coordinates for your shot!"
-  #     input = @player.get_player_input
-  #   end
-  #   until @player_cell_list.include?(input)
-  #     puts "Those are invalid coordinates. Please try again"
-  #     input = @player.get_player_input
-  #   end
-  #   input
-  # end
 
 
   def player_gives_shot_coordinate_or_checks_status
@@ -202,24 +185,39 @@ def player_cell_status(input)
     player_call_result(cell_input)
   end
 
-  def computer_shot
+
+
+  def computer_picks_cell_and_fires_on_it
     input = @computer.smart_attack
- # binding.pry
     @board_user.cells[input].fire_upon
+    input
+  end
+
+  def computer_hit_miss_or_sunk_statement(input)
     if @board_user.cells[input].fired_upon? && @board_user.cells[input].ship == nil
       p "Computer's shot on #{input} was a miss."
     elsif @board_user.cells[input].fired_upon? && @board_user.cells[input].ship != nil
       p "Computer's shot on #{input} was a hit!"
       if @board_user.cells[input].ship.sunk?
-      #  binding.pry
         p "Computer sunk your #{@board_user.cells[input].ship.name}!"
       end
     end
+  end
+
+  def board_render
     puts "===========Computer Board==========="
     @board_computer.render(true)
     puts "===========PLAYER BOARD============="
     @board_user.render(true)
   end
+
+    def computer_shot
+      input = computer_picks_cell_and_fires_on_it
+      computer_hit_miss_or_sunk_statement(input)
+      board_render
+    end
+
+
 
   def player_loss?
     if @cruiser1.sunk? && @submarine1.sunk?
