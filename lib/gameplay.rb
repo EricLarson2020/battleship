@@ -163,7 +163,6 @@ def player_cell_status(input)
   end
 
   def status_board_computer(cell_input)
-    # binding.pry
     @board_computer.cells[cell_input].render
     @board_computer.cells[cell_input].status
   end
