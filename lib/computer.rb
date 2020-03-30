@@ -70,15 +70,11 @@ class Computer
   end
 
   def smart_attack
-
     if @attack_cell == ''
       attack
-
     elsif missed_or_sunk?(@attack_cell)
-
       attack
     elsif hit?(@attack_cell)
-
       smart_attack_cell(@attack_cell)
     end
   end
