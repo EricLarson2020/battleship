@@ -71,6 +71,22 @@ class GameplayTest < Minitest::Test
     assert_equal expected, game.player_call_result("A1")
   end
 
+  def test_welcome_statement
+    cruiser1 = Ship.new("Cruiser", 3)
+    submarine1 = Ship.new("Submarine", 2)
+    cruiser2 = Ship.new("Cruiser", 3)
+    submarine2 = Ship.new("Submarine", 2)
+    board_user = Board.new
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
+    player = Player.new(board_user, board_computer)
+    game = Gameplay.new(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
+    assert_equal true, game.welcome_statement("p")
+    assert_equal false, game.welcome_statement("ald")
+
+
+  end
+
   def test_for_the_play_loop
 skip
     cruiser1 = Ship.new("Cruiser", 3)
@@ -90,7 +106,7 @@ skip
     assert_equal win, game.play_loop
   end
 
-  
+
 
 
 def test_computer_loss?
