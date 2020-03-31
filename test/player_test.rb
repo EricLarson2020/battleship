@@ -17,6 +17,15 @@ class PlayerTest < Minitest::Test
     assert_instance_of Player, player
   end
 
+  def test_it_has_boards
+    board_user = Board.new
+    board_computer = Board.new
+    player = Player.new(board_user, board_computer)
+    assert_equal board_computer, player.board_computer
+    assert_equal board_user, player.board_user
+
+  end
+
   def test_cell_status
     cruiser1 = Ship.new("Cruiser", 3)
     submarine1 = Ship.new("Submarine", 2)
@@ -31,6 +40,5 @@ class PlayerTest < Minitest::Test
     assert_equal :missed, player.cell_status(fire)
     assert_equal :not_hit, player.cell_status("A2")
      assert_equal :hit, player.cell_status("B1")
-
   end
 end

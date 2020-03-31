@@ -1,7 +1,7 @@
 require "pry"
 
 class Gameplay
-attr_reader :board_user, :board_computer, :cruiser, :computer
+attr_reader :board_user, :board_computer, :cruiser, :computer, :player_cell_list
 #computer
   def initialize(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
     @board_user = board_user
@@ -19,6 +19,7 @@ attr_reader :board_user, :board_computer, :cruiser, :computer
 
     var = welcome
     if var == true
+
       cruiser_assignment
       submarine_assignment
       computer_placement
@@ -36,13 +37,15 @@ attr_reader :board_user, :board_computer, :cruiser, :computer
       index += 1
       #index is for pry access
     end
+    win_or_lose_statement
+  end
 
+  def win_or_lose_statement
     if player_loss?
        p "Computer has won the game!"
     elsif computer_loss?
        p "Human has won the game!"
     end
-
   end
 
   def player_start
@@ -80,9 +83,12 @@ attr_reader :board_user, :board_computer, :cruiser, :computer
     welcome_statement(player_input)
   end
 
-
-def player_placement_valid(ship)
+  def get_player_ship_input
   input = @player.ship_assignment
+  input
+  end
+
+def player_placement_valid(ship, input)
   if @board_user.valid_placement?(ship, input) != true
      until @board_user.valid_placement?(ship, input)
       p "Those are invalid coordinates. Please try again:"
@@ -97,14 +103,16 @@ end
   def cruiser_assignment
     p "Enter the squares for the Cruiser (3 spaces):"
     ship = @cruiser1
-    player_placement_valid(ship)
+    input = get_player_ship_input
+    player_placement_valid(ship, input)
     @board_user.render(true)
   end
 
   def submarine_assignment
     p "Enter the squares for the Submarine (2 spaces):"
     ship = @submarine1
-    player_placement_valid(ship)
+    input = get_player_ship_input
+    player_placement_valid(ship, input)
     @board_user.render(true)
   end
 
@@ -113,6 +121,7 @@ end
     # binding.pry
     @board_computer.place(@cruiser2, @computer.auto_coordinates(@cruiser2))
     @board_computer.place(@submarine2, @computer.auto_coordinates(@submarine2))
+    # require "pry";binding.pry
     puts "===========Computer Board==========="
     @board_computer.render(true)
     puts "===========PLAYER BOARD============="
@@ -125,27 +134,36 @@ def player_cell_status(input)
     player_input = ""
       until player_input == "exit"
       p "Please enter a coordinate to check status, or exit to return."
-
       p player_input = @player.give_cell_status
-
+      end
     end
   end
 
-  end
 
-  def player_shot_input
+  def player_gives_shot_coordinate_or_checks_status
     p "Enter the coordinate for your shot, or type status to check cell status"
     input = @player.get_player_input
-    player_cell_status(input)
+      player_cell_status(input)
     if input == "status"
       p "Enter the coordinates for your shot!"
       input = @player.get_player_input
     end
+    input
+  end
+
+  def coordinates_are_validated(input)
     until @player_cell_list.include?(input)
       puts "Those are invalid coordinates. Please try again"
       input = @player.get_player_input
     end
     input
+  end
+
+
+
+  def player_shot_input
+  input = player_gives_shot_coordinate_or_checks_status
+  coordinates_are_validated(input)
   end
 
   def player_fire_on(cell_input)
@@ -154,7 +172,6 @@ def player_cell_status(input)
   end
 
   def status_board_computer(cell_input)
-    # binding.pry
     @board_computer.cells[cell_input].render
     @board_computer.cells[cell_input].status
   end
@@ -176,24 +193,46 @@ def player_cell_status(input)
     player_call_result(cell_input)
   end
 
-  def computer_shot
+
+
+  def computer_picks_cell_and_fires_on_it
     input = @computer.smart_attack
- # binding.pry
     @board_user.cells[input].fire_upon
+    input
+  end
+
+  def computer_hit_miss_or_sunk_statement(input)
+    # require"pry";binding.pry
     if @board_user.cells[input].fired_upon? && @board_user.cells[input].ship == nil
       p "Computer's shot on #{input} was a miss."
-    elsif @board_user.cells[input].fired_upon? && @board_user.cells[input].ship != nil
-      p "Computer's shot on #{input} was a hit!"
-      if @board_user.cells[input].ship.sunk?
-      #  binding.pry
+
+    elsif @board_user.cells[input].ship.sunk?
         p "Computer sunk your #{@board_user.cells[input].ship.name}!"
-      end
+
+    elsif @board_user.cells[input].fired_upon? && @board_user.cells[input].ship != nil
+
+      p "Computer's shot on #{input} was a hit!"
+
+
+
     end
+  end
+
+  def board_render
     puts "===========Computer Board==========="
     @board_computer.render(true)
     puts "===========PLAYER BOARD============="
     @board_user.render(true)
   end
+
+    def computer_shot
+      input = computer_picks_cell_and_fires_on_it
+      computer_hit_miss_or_sunk_statement(input)
+      board_render
+      input
+    end
+
+
 
   def player_loss?
     if @cruiser1.sunk? && @submarine1.sunk?
