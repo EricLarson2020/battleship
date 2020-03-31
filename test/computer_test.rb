@@ -179,6 +179,8 @@ class ComputerTest < Minitest::Test
     board_user.cells["A1"].render
     board_user.cells["B1"].render
 
+    assert_equal ["B1", "A2"], computer.smart_cells("A1")
+
   end
 
   def test_smart_cells_pick_adjacent_and_not_hit

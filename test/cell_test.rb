@@ -76,9 +76,3 @@ class ShipTest < Minitest::Test
 
   end
 end
-
-
-#
-# # Indicate that we want to show a ship with the optional argument
-# pry(main)> cell_2.render(true)
-# # => "S"
