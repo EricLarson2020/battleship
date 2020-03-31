@@ -24,6 +24,18 @@ class ComputerTest < Minitest::Test
     assert_equal true, board_computer.valid_coordinate?(computer.attack_cell)
   end
 
+  def test_it_can_delete_cells
+    board_user = Board.new
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
+    original_cells = ["A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4"]
+    delete_cells = ["A1", "A2", "A3", "A4"]
+    expected_list = ["B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4"]
+
+    assert_equal expected_list, computer.delete_cells(original_cells, delete_cells)
+
+  end
+
   def test_it_cant_pick_if_cell_list_is_empty
     board_user = Board.new
     board_computer = Board.new
@@ -49,11 +61,9 @@ class ComputerTest < Minitest::Test
     computer.attack # 17
     #binding.pry
     assert_equal '',  computer.attack_cell
-
   end
 
   def test_it_can_place_valid_ships
-
     board_user = Board.new
     board_computer = Board.new
     computer = Computer.new(board_user, board_computer)
@@ -69,75 +79,6 @@ class ComputerTest < Minitest::Test
     board_computer.place(cruiser, cruiser_auto_place)
     board_computer.place(submarine, submarine_auto_place)
     puts board_computer.render(true)
-    # binding.pry
-
-  end
-
-  def test_it_can_identify_adjacent_cells
-    board_user = Board.new
-    board_computer = Board.new
-    computer = Computer.new(board_user, board_computer)
-    cruiser = Ship.new("Cruiser", 3)
-    submarine = Ship.new("Sumbarine", 2)
-
-    computer.adjacent_cells("A1")
-
-    assert_equal ["B2", "D2", "C3", "C1"], computer.adjacent_cells("C2")
-
-  end
-
-  def test_it_can_delete_cells
-    board_user = Board.new
-    board_computer = Board.new
-    computer = Computer.new(board_user, board_computer)
-    original_cells = ["A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4"]
-    delete_cells = ["A1", "A2", "A3", "A4"]
-    expected_list = ["B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4"]
-
-    assert_equal expected_list, computer.delete_cells(original_cells, delete_cells)
-
-  end
-
-  def test_it_only_attacks_remaining_cells
-    board_user = Board.new
-    board_computer = Board.new
-    computer = Computer.new(board_user, board_computer)
-    # binding.pry
-    expected_list = ["A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4"]
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#15
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#14
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#13
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#12
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#11
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#10
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#9
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#8
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#7
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#6
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#5
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#4
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#3
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#2
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#1
-    assert_equal true, expected_list.include?(computer.attack)
-    expected_list.delete(computer.attack_cell)#0
-    assert_equal '', computer.attack
-
   end
 
   def test_cell_missed_or_sunk
@@ -186,6 +127,48 @@ class ComputerTest < Minitest::Test
     assert_equal false, computer.hit?("A1")
   end
 
+  def test_it_only_attacks_remaining_cells
+    board_user = Board.new
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
+    # binding.pry
+    expected_list = ["A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4"]
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#15
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#14
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#13
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#12
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#11
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#10
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#9
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#8
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#7
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#6
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#5
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#4
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#3
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#2
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#1
+    assert_equal true, expected_list.include?(computer.attack)
+    expected_list.delete(computer.attack_cell)#0
+    assert_equal '', computer.attack
+
+  end
+
   def test_smart_cell_is_adjacent_and_not_hit
     board_user = Board.new
     board_computer = Board.new
@@ -195,6 +178,8 @@ class ComputerTest < Minitest::Test
     board_user.cells["A1"].fire_upon
     board_user.cells["A1"].render
     board_user.cells["B1"].render
+
+    assert_equal ["B1", "A2"], computer.smart_cells("A1")
 
   end
 
@@ -271,14 +256,56 @@ class ComputerTest < Minitest::Test
     board_user.cells["B4"].render
     expected_list = ["A2", "B3"]
     actual_attack_cell = computer.smart_attack_cell("A3")
-    p actual_attack_cell
-    # binding.pry
 
     assert_equal true, expected_list.include?(actual_attack_cell)
     assert_equal false, computer.attack_cell_list.include?(actual_attack_cell)
   end
 
+  def test_smart_attack_attacks_random_on_first_and_not_hit
+    board_user = Board.new
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
+    cruiser = Ship.new("Cruiser", 3)
+    board_user.place(cruiser, ["A1", "A2", "A3"])
+    original_cells = ["A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4", "D1", "D2", "D3", "D4"]
+    computer.smart_attack
+    assert_equal true, original_cells.include?(computer.attack_cell)
+    board_user.cells[computer.attack_cell].fire_upon
+    board_user.render
+    computer.smart_attack
+    assert_equal true, original_cells.include?(computer.attack_cell)
+  end
 
+  def test_smart_attack_attacks_adjacent_cells_if_hit
+    board_user = Board.new
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
+    cruiser = Ship.new("Cruiser", 4)
+    board_user.place(cruiser, ["A1", "A2", "A3", "A4"])
+    board_user.place(cruiser, ["B1", "B2", "B3", "B4"])
+    board_user.place(cruiser, ["C1", "C2", "C3", "C4"])
+    board_user.place(cruiser, ["D1", "D2", "D3", "D4"])
+    computer.smart_attack
+    board_user.render
+    past_attack_cell = computer.attack_cell
+    board_user.cells[past_attack_cell].fire_upon
+    board_user.render
+    # binding.pry
+    assert_equal :hit, board_user.cells[past_attack_cell].status
+    computer.smart_attack
+    # binding.pry
+    assert_equal true, computer.adjacent_cells(past_attack_cell).include?(computer.attack_cell)
+  end
+
+
+  def test_it_can_identify_adjacent_cells
+    board_user = Board.new
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
+
+    computer.adjacent_cells("A1")
+    assert_equal ["B2", "D2", "C3", "C1"], computer.adjacent_cells("C2")
+  end
 
 
 end

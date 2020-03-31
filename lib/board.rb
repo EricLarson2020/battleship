@@ -75,9 +75,16 @@ class Board
     end
   end
 
-
   def y_coordinates_sequential?(cell_list)
     numbers_same?(cell_list) && (letters_incement?(cell_list) || letters_decrement?(cell_list))
+  end
+
+  def place(ship, coordinates)
+      if valid_placement?(ship, coordinates)
+        coordinates.each do |coordinate|
+          cells[coordinate].place_ship(ship)
+        end
+      end
   end
 
   def cells_with_ships
@@ -108,16 +115,9 @@ class Board
 
   def valid_placement?(ship, cell_list)
     in_board?(cell_list) && sequential?(cell_list) && !ships_overlap?(ship, cell_list) && ship_length_equal_cell_length?(ship, cell_list)
-
   end
 
-  def place(ship, coordinates)
-      if valid_placement?(ship, coordinates)
-        coordinates.each do |coordinate|
-          cells[coordinate].place_ship(ship)
-        end
-      end
-  end
+
 
   def render(optional = false)
 
