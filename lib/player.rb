@@ -4,9 +4,7 @@ class Player
     @board_user = board_user
     @board_computer = board_computer
   end
-#status player method
 
-#starting_input_mehtod
   def player_starting_input
     starting_player_input = gets.chomp
     starting_player_input = starting_player_input.downcase
@@ -37,14 +35,11 @@ class Player
      p "exit"
    end
   end
-
+#Can't test takes player input
   def give_cell_status
     cell = get_cell
     cell_status(cell)
   end
-
-
-
 
   end
 
