@@ -28,7 +28,7 @@ class Player
 
   def cell_status(cell)
     board_user.render
-      if cell != "exit"
+      if cell != "exit" && board_user.valid_coordinate?(cell)
         # require"pry";binding.pry
         board_user.cells[cell].status
     else

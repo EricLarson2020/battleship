@@ -7,6 +7,7 @@ require './lib/gameplay'
 require './lib/computer'
 require './lib/player'
 require './lib/multiboats'
+require 'mocha/minitest'
 
 class GameplayTest < Minitest::Test
 
@@ -23,6 +24,36 @@ class GameplayTest < Minitest::Test
 
     assert_instance_of Gameplay, game
   end
+
+  # def test_player_start
+  #   cruiser1 = Ship.new("Cruiser", 3)
+  #   submarine1 = Ship.new("Submarine", 2)
+  #   cruiser2 = Ship.new("Cruiser", 3)
+  #   submarine2 = Ship.new("Submarine", 2)
+  #   board_user = Board.new
+  #   board_computer = Board.new
+  #   computer = Computer.new(board_computer, board_user)
+  #   player = Player.new(board_user, board_computer)
+  #   game = Gameplay.new(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
+  #   player.stubs(:player_starting_input).returns("p")
+  #   assert_equal "p", game.player_start
+  # end
+  #
+  # def test_player_start_with_q_input
+  #   cruiser1 = Ship.new("Cruiser", 3)
+  #   submarine1 = Ship.new("Submarine", 2)
+  #   cruiser2 = Ship.new("Cruiser", 3)
+  #   submarine2 = Ship.new("Submarine", 2)
+  #   board_user = Board.new
+  #   board_computer = Board.new
+  #   computer = Computer.new(board_computer, board_user)
+  #   player = Player.new(board_user, board_computer)
+  #   game = Gameplay.new(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
+  #   player.stubs(:player_starting_input).returns("q")
+  #   require"pry";binding.pry
+  #   assert_equal "q", game.player_start
+  # end
+
 
   def test_welcome_statement
     cruiser1 = Ship.new("Cruiser", 3)
@@ -54,6 +85,45 @@ class GameplayTest < Minitest::Test
     assert_equal "Submarine", board_user.cells["A2"].ship.name
     assert_equal nil, board_user.cells["A4"].ship
     assert_equal nil, board_user.cells["B3"].ship
+  end
+
+  def test_cruiser_assignment
+    cruiser1 = Ship.new("Cruiser", 3)
+    submarine1 = Ship.new("Submarine", 2)
+    cruiser2 = Ship.new("Cruiser", 3)
+    submarine2 = Ship.new("Submarine", 2)
+    board_user = Board.new
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
+    player = Player.new(board_user, board_computer)
+    game = Gameplay.new(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
+    input = ["A1", "A2", "A3"]
+    expected = "  1 2 3 4 \n" +
+               "A S S S . \n" +
+               "B . . . . \n" +
+               "C . . . . \n" +
+               "D . . . . \n"
+    assert_equal expected, game.cruiser_assignment(input)
+
+  end
+
+  def test_submarine_placement
+    cruiser1 = Ship.new("Cruiser", 3)
+    submarine1 = Ship.new("Submarine", 2)
+    cruiser2 = Ship.new("Cruiser", 3)
+    submarine2 = Ship.new("Submarine", 2)
+    board_user = Board.new
+    board_computer = Board.new
+    computer = Computer.new(board_user, board_computer)
+    player = Player.new(board_user, board_computer)
+    game = Gameplay.new(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
+    input = ["B1", "B2"]
+    expected = "  1 2 3 4 \n" +
+               "A . . . . \n" +
+               "B S S . . \n" +
+               "C . . . . \n" +
+               "D . . . . \n"
+    assert_equal expected, game.submarine_assignment(input)
   end
 
   def test_computer_placement
