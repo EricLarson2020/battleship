@@ -2,24 +2,34 @@ require "pry"
 
 class Gameplay
 attr_reader :board_user, :board_computer, :cruiser, :computer, :player_cell_list
+attr_accessor :cruiser_user, :submarine_user
 #computer
-  def initialize(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
+  def initialize(board_user, board_computer, computer, player, cruiser_user, cruiser_computer, submarine_user, submarine_computer, multiboats = false)
     @board_user = board_user
     @board_computer = board_computer
     @computer = computer
-    @cruiser1 = cruiser1
-    @submarine1 = submarine1
-    @cruiser2 = cruiser2
-    @submarine2 = submarine2
+    @cruiser_user = cruiser_user
+    @submarine_user = submarine_user
+    @cruiser_computer = cruiser_computer
+    @submarine_computer = submarine_computer
     @player_cell_list = board_user.cells.keys
     @player = player
+    @multiboats = multiboats
   end
 
-  def start
+  def run_multiboats
+    if @multiboats
+      @multiboats.ship_loop
+      @cruiser_user = @multiboats.ships[0]
+      @submarine_user = @multiboats.ships[1]
+    end
+  end
 
+
+  def start
     var = welcome
     if var == true
-
+      run_multiboats
       cruiser_assignment
       submarine_assignment
       computer_placement
@@ -88,29 +98,28 @@ attr_reader :board_user, :board_computer, :cruiser, :computer, :player_cell_list
   input
   end
 
-def player_placement_valid(ship, input)
-  if @board_user.valid_placement?(ship, input) != true
-     until @board_user.valid_placement?(ship, input)
-      p "Those are invalid coordinates. Please try again:"
-    input = @player.ship_assignment
-
-     end
+  def player_placement_valid(ship, input)
+    if @board_user.valid_placement?(ship, input) != true
+       until @board_user.valid_placement?(ship, input)
+        p "Those are invalid coordinates. Please try again:"
+        input = @player.ship_assignment
+       end
+    end
+      @board_user.place(ship, input)
   end
-    @board_user.place(ship, input)
-end
 
 
   def cruiser_assignment
-    p "Enter the squares for the Cruiser (3 spaces):"
-    ship = @cruiser1
+    p "Enter the squares for the #{@cruiser_user.name} (#{@cruiser_user.length} spaces):"
+    ship = @cruiser_user
     input = get_player_ship_input
     player_placement_valid(ship, input)
     @board_user.render(true)
   end
 
   def submarine_assignment
-    p "Enter the squares for the Submarine (2 spaces):"
-    ship = @submarine1
+    p "Enter the squares for the #{@submarine_user.name} (#{@submarine_user.length} spaces):"
+    ship = @submarine_user
     input = get_player_ship_input
     player_placement_valid(ship, input)
     @board_user.render(true)
@@ -119,8 +128,8 @@ end
 
   def computer_placement
     # binding.pry
-    @board_computer.place(@cruiser2, @computer.auto_coordinates(@cruiser2))
-    @board_computer.place(@submarine2, @computer.auto_coordinates(@submarine2))
+    @board_computer.place(@cruiser_computer, @computer.auto_coordinates(@cruiser_computer))
+    @board_computer.place(@submarine_computer, @computer.auto_coordinates(@submarine_computer))
     # require "pry";binding.pry
     puts "===========Computer Board==========="
     @board_computer.render(true)
@@ -128,14 +137,14 @@ end
     @board_user.render(true)
   end
 
-def player_cell_status(input)
-  if input == "status"
-    p "Enter exit to return to shot input"
-    player_input = ""
-      until player_input == "exit"
-      p "Please enter a coordinate to check status, or exit to return."
-      p player_input = @player.give_cell_status
-      end
+  def player_cell_status(input)
+    if input == "status"
+      p "Enter exit to return to shot input"
+      player_input = ""
+        until player_input == "exit"
+        p "Please enter a coordinate to check status, or exit to return."
+        p player_input = @player.give_cell_status
+        end
     end
   end
 
@@ -158,8 +167,6 @@ def player_cell_status(input)
     end
     input
   end
-
-
 
   def player_shot_input
   input = player_gives_shot_coordinate_or_checks_status
@@ -205,16 +212,10 @@ def player_cell_status(input)
     # require"pry";binding.pry
     if @board_user.cells[input].fired_upon? && @board_user.cells[input].ship == nil
       p "Computer's shot on #{input} was a miss."
-
     elsif @board_user.cells[input].ship.sunk?
         p "Computer sunk your #{@board_user.cells[input].ship.name}!"
-
     elsif @board_user.cells[input].fired_upon? && @board_user.cells[input].ship != nil
-
       p "Computer's shot on #{input} was a hit!"
-
-
-
     end
   end
 
@@ -225,17 +226,17 @@ def player_cell_status(input)
     @board_user.render(true)
   end
 
-    def computer_shot
-      input = computer_picks_cell_and_fires_on_it
-      computer_hit_miss_or_sunk_statement(input)
-      board_render
-      input
-    end
+  def computer_shot
+    input = computer_picks_cell_and_fires_on_it
+    computer_hit_miss_or_sunk_statement(input)
+    board_render
+    input
+  end
 
 
 
   def player_loss?
-    if @cruiser1.sunk? && @submarine1.sunk?
+    if @cruiser_user.sunk? && @submarine_user.sunk?
       true
     else
       false
@@ -243,7 +244,7 @@ def player_cell_status(input)
   end
 
   def computer_loss?
-    if @cruiser2.sunk? && @submarine2.sunk?
+    if @cruiser_computer.sunk? && @submarine_computer.sunk?
       true
     else
       false
