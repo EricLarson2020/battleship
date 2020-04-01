@@ -135,8 +135,8 @@ attr_accessor :cruiser_user, :submarine_user
   def cruiser_and_submarine_assignment
     input_cruiser = cruiser_ship_input
     cruiser_assignment(input_cruiser)
-    input_submarine = submarine_ship_input
-    submarine_assignment(input_submarine)
+    input_submarine = submarine_ship_input if @submarine_user != nil
+    submarine_assignment(input_submarine) if @submarine_user != nil
   end
 
 
@@ -250,7 +250,7 @@ attr_accessor :cruiser_user, :submarine_user
 
 
   def player_loss?
-    if @cruiser_user.sunk? && @submarine_user.sunk?
+    if @cruiser_user.sunk? && ((@submarine_user.sunk? if @submarine_user != nil) ||@submarine_user == nil)
       true
     else
       false
