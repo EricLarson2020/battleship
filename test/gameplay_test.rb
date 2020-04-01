@@ -7,6 +7,7 @@ require './lib/gameplay'
 require './lib/computer'
 require './lib/player'
 require './lib/multiboats'
+require 'mocha/minitest'
 
 class GameplayTest < Minitest::Test
 
@@ -23,6 +24,36 @@ class GameplayTest < Minitest::Test
 
     assert_instance_of Gameplay, game
   end
+
+  # def test_player_start
+  #   cruiser1 = Ship.new("Cruiser", 3)
+  #   submarine1 = Ship.new("Submarine", 2)
+  #   cruiser2 = Ship.new("Cruiser", 3)
+  #   submarine2 = Ship.new("Submarine", 2)
+  #   board_user = Board.new
+  #   board_computer = Board.new
+  #   computer = Computer.new(board_computer, board_user)
+  #   player = Player.new(board_user, board_computer)
+  #   game = Gameplay.new(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
+  #   player.stubs(:player_starting_input).returns("p")
+  #   assert_equal "p", game.player_start
+  # end
+  #
+  # def test_player_start_with_q_input
+  #   cruiser1 = Ship.new("Cruiser", 3)
+  #   submarine1 = Ship.new("Submarine", 2)
+  #   cruiser2 = Ship.new("Cruiser", 3)
+  #   submarine2 = Ship.new("Submarine", 2)
+  #   board_user = Board.new
+  #   board_computer = Board.new
+  #   computer = Computer.new(board_computer, board_user)
+  #   player = Player.new(board_user, board_computer)
+  #   game = Gameplay.new(board_user, board_computer, computer, player, cruiser1, cruiser2, submarine1, submarine2)
+  #   player.stubs(:player_starting_input).returns("q")
+  #   require"pry";binding.pry
+  #   assert_equal "q", game.player_start
+  # end
+
 
   def test_welcome_statement
     cruiser1 = Ship.new("Cruiser", 3)

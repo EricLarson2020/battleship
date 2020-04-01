@@ -109,18 +109,18 @@ attr_accessor :cruiser_user, :submarine_user
   end
 
 
-  def cruiser_assignment
+  def cruiser_assignment(input)
     p "Enter the squares for the #{@cruiser_user.name} (#{@cruiser_user.length} spaces):"
     ship = @cruiser_user
-    input = get_player_ship_input
+    # input = get_player_ship_input
     player_placement_valid(ship, input)
     @board_user.render(true)
   end
 
-  def submarine_assignment
+  def submarine_assignment(input)
     p "Enter the squares for the #{@submarine_user.name} (#{@submarine_user.length} spaces):"
     ship = @submarine_user
-    input = get_player_ship_input
+    # input = get_player_ship_input
     player_placement_valid(ship, input)
     @board_user.render(true)
   end
