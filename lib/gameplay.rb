@@ -30,8 +30,7 @@ attr_accessor :cruiser_user, :submarine_user
     var = welcome
     if var == true
       run_multiboats
-      cruiser_assignment
-      submarine_assignment
+      cruiser_and_submarine_assignment
       computer_placement
       play_loop
     end
@@ -93,9 +92,16 @@ attr_accessor :cruiser_user, :submarine_user
     welcome_statement(player_input)
   end
 
-  def get_player_ship_input
+  def cruiser_ship_input
+    p "Enter the squares for the #{@cruiser_user.name} (#{@cruiser_user.length} spaces):"
   input = @player.ship_assignment
   input
+  end
+
+  def submarine_ship_input
+    p "Enter the squares for the #{@submarine_user.name} (#{@submarine_user.length} spaces):"
+    input = @player.ship_assignment
+    input
   end
 
   def player_placement_valid(ship, input)
@@ -109,20 +115,28 @@ attr_accessor :cruiser_user, :submarine_user
   end
 
 
-  def cruiser_assignment(input)
-    p "Enter the squares for the #{@cruiser_user.name} (#{@cruiser_user.length} spaces):"
+  def cruiser_assignment(input_cruiser)
     ship = @cruiser_user
     # input = get_player_ship_input
-    player_placement_valid(ship, input)
+    player_placement_valid(ship, input_cruiser)
     @board_user.render(true)
   end
 
-  def submarine_assignment(input)
-    p "Enter the squares for the #{@submarine_user.name} (#{@submarine_user.length} spaces):"
+
+
+  def submarine_assignment(input_submarine)
+
     ship = @submarine_user
     # input = get_player_ship_input
-    player_placement_valid(ship, input)
+    player_placement_valid(ship, input_submarine)
     @board_user.render(true)
+  end
+
+  def cruiser_and_submarine_assignment
+    input_cruiser = cruiser_ship_input
+    cruiser_assignment(input_cruiser)
+    input_submarine = submarine_ship_input
+    submarine_assignment(input_submarine)
   end
 
 
