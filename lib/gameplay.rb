@@ -62,7 +62,7 @@ attr_accessor :cruiser_user, :submarine_user
     p "Welcome to BATTLESHIP"
     p "Enter p to play. Enter q to quit."
     player_input = @player.player_starting_input
-    until player_input == "p" || "q"
+    until player_input == "p" || player_input == "q"
       p "Invalid input, please try again"
       player_input = @player.player_starting_input
     end
