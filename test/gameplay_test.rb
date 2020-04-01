@@ -6,6 +6,7 @@ require './lib/cell'
 require './lib/gameplay'
 require './lib/computer'
 require './lib/player'
+require './lib/multiboats'
 
 class GameplayTest < Minitest::Test
 
