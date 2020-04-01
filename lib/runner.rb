@@ -14,7 +14,7 @@ board_user = Board.new
 board_computer = Board.new
 computer = Computer.new(board_user, board_computer)
 player = Player.new(board_user, board_computer)
-multiboats = Multiboats.new(2)
+multiboats = Multiboats.new(1)
 game = Gameplay.new(board_user, board_computer, computer, player, cruiser_user, cruiser_computer, submarine_user, submarine_computer, multiboats)
 
 

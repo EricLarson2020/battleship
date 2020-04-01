@@ -250,7 +250,7 @@ attr_accessor :cruiser_user, :submarine_user
 
 
   def player_loss?
-    if @cruiser_user.sunk? && ((@submarine_user.sunk? if @submarine_user != nil) ||@submarine_user == nil)
+    if @cruiser_user.sunk? && ((@submarine_user.sunk? if @submarine_user != nil) || @submarine_user == nil)
       true
     else
       false
